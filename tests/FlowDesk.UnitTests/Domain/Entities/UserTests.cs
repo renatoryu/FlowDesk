@@ -83,7 +83,7 @@ public sealed class UserTests
     }
 
     [Fact]
-    public void ChangePasswordHaChangePasswordHashWithValidHashUpdatesPasswordHashsh_WithValidHash_UpdatesPasswordHash()
+    public void ChangePasswordHashWithValidHashUpdatesPasswordHash()
     {
         User user = CreateUser();
 
