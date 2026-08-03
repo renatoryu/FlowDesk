@@ -1,0 +1,42 @@
+## .NET
+bin/
+obj/
+artifacts/
+TestResults/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+.vs/
+.vscode/
+.idea/
+
+## Local SDK and packages used by Codex/CI
+.dotnet-cli/
+.nuget/
+
+## Secrets and local configuration
+.env
+.env.*
+!.env.example
+appsettings.Local.json
+secrets.json
+
+## Front-end
+node_modules/
+.next/
+dist/
+coverage/
+*.tsbuildinfo
+
+## Runtime uploads and logs
+uploads/
+logs/
+
+## OS
+.DS_Store
+Thumbs.db
+
+## Temporary review artifacts
+tmp/
+

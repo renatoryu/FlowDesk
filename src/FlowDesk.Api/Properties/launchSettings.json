@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "FlowDesk.Api": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:62559;http://localhost:62560"
+    }
+  }
+}
