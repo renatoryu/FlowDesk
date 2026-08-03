@@ -15,19 +15,19 @@ Este documento acompanha o desenvolvimento incremental do FlowDesk. Uma sprint s
 - [x] Configurar a documentação inicial.
 - [x] Executar a API localmente.
 - [x] Realizar o primeiro commit.
-- [ ] Criar o commit de conclusão da Sprint 0.
+- [x] Criar o commit de conclusão da Sprint 0.
 
 ## Sprint 1 — Autenticação
 
-- [ ] Modelar a entidade `User`.
-- [ ] Configurar o Entity Framework Core.
-- [ ] Configurar o SQL Server.
-- [ ] Criar a migration inicial.
-- [ ] Implementar cadastro.
-- [ ] Implementar login.
-- [ ] Implementar JWT.
-- [ ] Implementar refresh token.
-- [ ] Configurar Swagger/OpenAPI.
+- [x] Modelar a entidade `User`.
+- [x] Configurar o Entity Framework Core.
+- [x] Configurar o SQL Server.
+- [x] Criar a migration inicial.
+- [x] Implementar cadastro.
+- [x] Implementar login.
+- [x] Implementar JWT.
+- [x] Implementar refresh token.
+- [x] Configurar Swagger/OpenAPI.
 
 ## Sprint 2 — Empresas
 
