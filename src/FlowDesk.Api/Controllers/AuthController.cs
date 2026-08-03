@@ -1,9 +1,10 @@
-using FlowDesk.Application.Authentication.Login;
-using FlowDesk.Application.Authentication.Register;
-using Microsoft.AspNetCore.Mvc;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using FlowDesk.Application.Authentication.Login;
+using FlowDesk.Application.Authentication.Refresh;
+using FlowDesk.Application.Authentication.Register;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace FlowDesk.Api.Controllers;
 
@@ -13,13 +14,16 @@ public sealed class AuthController : ControllerBase
 {
     private readonly RegisterUserHandler _registerUserHandler;
     private readonly LoginUserHandler _loginUserHandler;
+    private readonly RefreshSessionHandler _refreshSessionHandler;
 
     public AuthController(
         RegisterUserHandler registerUserHandler,
-        LoginUserHandler loginUserHandler)
+        LoginUserHandler loginUserHandler,
+        RefreshSessionHandler refreshSessionHandler)
     {
         _registerUserHandler = registerUserHandler;
         _loginUserHandler = loginUserHandler;
+        _refreshSessionHandler = refreshSessionHandler;
     }
 
     [HttpPost("register")]
@@ -60,6 +64,27 @@ public sealed class AuthController : ControllerBase
     {
         LoginUserResult result =
             await _loginUserHandler.HandleAsync(
+                command,
+                cancellationToken);
+
+        return Ok(result);
+    }
+
+    [HttpPost("refresh")]
+    [ProducesResponseType<RefreshSessionResult>(
+        StatusCodes.Status200OK)]
+    [ProducesResponseType<ProblemDetails>(
+        StatusCodes.Status400BadRequest)]
+    [ProducesResponseType<ProblemDetails>(
+        StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType<ProblemDetails>(
+        StatusCodes.Status500InternalServerError)]
+    public async Task<ActionResult<RefreshSessionResult>> Refresh(
+        RefreshSessionCommand command,
+        CancellationToken cancellationToken)
+    {
+        RefreshSessionResult result =
+            await _refreshSessionHandler.HandleAsync(
                 command,
                 cancellationToken);
 

@@ -1,8 +1,10 @@
 using FlowDesk.Api.ErrorHandling;
+using FlowDesk.Application.Authentication.Login;
+using FlowDesk.Application.Authentication.Refresh;
 using FlowDesk.Application.Authentication.Register;
 using FlowDesk.Infrastructure;
 using FluentValidation;
-using FlowDesk.Application.Authentication.Login;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +15,12 @@ builder.Services.AddScoped<
     LoginUserCommandValidator>();
 
 builder.Services.AddScoped<LoginUserHandler>();
+
+builder.Services.AddScoped<
+    IValidator<RefreshSessionCommand>,
+    RefreshSessionCommandValidator>();
+
+builder.Services.AddScoped<RefreshSessionHandler>();
 
 builder.Services.AddScoped<
     IValidator<RegisterUserCommand>,

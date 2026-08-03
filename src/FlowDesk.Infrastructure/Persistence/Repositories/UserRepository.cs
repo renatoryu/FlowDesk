@@ -39,4 +39,15 @@ public sealed class UserRepository : IUserRepository
     {
         await _dbContext.Users.AddAsync(user, cancellationToken);
     }
+
+    public Task<User?> GetByIdAsync(
+        Guid userId,
+        CancellationToken cancellationToken = default)
+    {
+        return _dbContext.Users
+            .AsNoTracking()
+            .SingleOrDefaultAsync(
+                user => user.Id == userId,
+                cancellationToken);
+    }
 }

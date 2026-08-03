@@ -4,60 +4,68 @@ using FlowDesk.Application.Common.Exceptions;
 using FlowDesk.Domain.Entities;
 using FluentValidation;
 
-namespace FlowDesk.Application.Authentication.Login;
+namespace FlowDesk.Application.Authentication.Refresh;
 
-public sealed class LoginUserHandler
+public sealed class RefreshSessionHandler
 {
-    private readonly IUserRepository _userRepository;
     private readonly IRefreshTokenRepository _refreshTokenRepository;
+    private readonly IUserRepository _userRepository;
     private readonly IUnitOfWork _unitOfWork;
-    private readonly IPasswordHasher _passwordHasher;
     private readonly IAccessTokenGenerator _accessTokenGenerator;
     private readonly IRefreshTokenGenerator _refreshTokenGenerator;
-    private readonly IValidator<LoginUserCommand> _validator;
+    private readonly IValidator<RefreshSessionCommand> _validator;
 
-    public LoginUserHandler(
-        IUserRepository userRepository,
+    public RefreshSessionHandler(
         IRefreshTokenRepository refreshTokenRepository,
+        IUserRepository userRepository,
         IUnitOfWork unitOfWork,
-        IPasswordHasher passwordHasher,
         IAccessTokenGenerator accessTokenGenerator,
         IRefreshTokenGenerator refreshTokenGenerator,
-        IValidator<LoginUserCommand> validator)
+        IValidator<RefreshSessionCommand> validator)
     {
-        _userRepository = userRepository;
         _refreshTokenRepository = refreshTokenRepository;
+        _userRepository = userRepository;
         _unitOfWork = unitOfWork;
-        _passwordHasher = passwordHasher;
         _accessTokenGenerator = accessTokenGenerator;
         _refreshTokenGenerator = refreshTokenGenerator;
         _validator = validator;
     }
 
-    public async Task<LoginUserResult> HandleAsync(
-        LoginUserCommand command,
+    public async Task<RefreshSessionResult> HandleAsync(
+        RefreshSessionCommand command,
         CancellationToken cancellationToken = default)
     {
         await _validator.ValidateAndThrowAsync(
             command,
             cancellationToken);
 
-        string normalizedEmail =
-            command.Email.Trim().ToLowerInvariant();
+        string tokenHash =
+            _refreshTokenGenerator.ComputeHash(
+                command.RefreshToken);
 
-        User? user =
-            await _userRepository.GetByEmailAsync(
-                normalizedEmail,
+        RefreshToken? currentRefreshToken =
+            await _refreshTokenRepository.GetByTokenHashAsync(
+                tokenHash,
                 cancellationToken);
 
-        if (user is null ||
-            !user.IsActive ||
-            !_passwordHasher.Verify(
-                user.PasswordHash,
-                command.Password))
+        DateTime utcNow = DateTime.UtcNow;
+
+        if (currentRefreshToken is null ||
+            !currentRefreshToken.IsActive(utcNow))
         {
             throw new UnauthorizedException(
-                "Invalid email or password.");
+                "Invalid or expired refresh token.");
+        }
+
+        User? user =
+            await _userRepository.GetByIdAsync(
+                currentRefreshToken.UserId,
+                cancellationToken);
+
+        if (user is null || !user.IsActive)
+        {
+            throw new UnauthorizedException(
+                "Invalid or expired refresh token.");
         }
 
         AccessTokenResult accessToken =
@@ -66,23 +74,23 @@ public sealed class LoginUserHandler
         GeneratedRefreshToken generatedRefreshToken =
             _refreshTokenGenerator.Generate();
 
-        var refreshToken = new RefreshToken(
+        var newRefreshToken = new RefreshToken(
             user.Id,
             generatedRefreshToken.TokenHash,
             generatedRefreshToken.ExpiresAtUtc);
 
+        currentRefreshToken.Revoke(
+            utcNow,
+            newRefreshToken.Id);
+
         await _refreshTokenRepository.AddAsync(
-            refreshToken,
+            newRefreshToken,
             cancellationToken);
 
         await _unitOfWork.SaveChangesAsync(
             cancellationToken);
 
-        return new LoginUserResult(
-            user.Id,
-            user.FullName,
-            user.Email,
-            user.Role.ToString(),
+        return new RefreshSessionResult(
             accessToken.Token,
             accessToken.ExpiresAtUtc,
             generatedRefreshToken.Token,

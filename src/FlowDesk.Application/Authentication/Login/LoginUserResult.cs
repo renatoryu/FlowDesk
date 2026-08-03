@@ -6,4 +6,6 @@ public sealed record LoginUserResult(
     string Email,
     string Role,
     string AccessToken,
-    DateTime AccessTokenExpiresAtUtc);
+    DateTime AccessTokenExpiresAtUtc,
+    string RefreshToken,
+    DateTime RefreshTokenExpiresAtUtc);

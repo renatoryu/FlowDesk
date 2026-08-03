@@ -29,6 +29,10 @@ public static class DependencyInjection
 
         services.AddScoped<IUserRepository, UserRepository>();
 
+        services.AddScoped<
+            IRefreshTokenRepository,
+            RefreshTokenRepository>();
+
         services.AddScoped<IUnitOfWork>(serviceProvider =>
             serviceProvider.GetRequiredService<FlowDeskDbContext>());
 
@@ -63,6 +67,10 @@ public static class DependencyInjection
         services.AddSingleton<
             IAccessTokenGenerator,
             JwtTokenGenerator>();
+
+        services.AddSingleton<
+            IRefreshTokenGenerator,
+            RefreshTokenGenerator>();
 
         services
             .AddAuthentication(
@@ -118,6 +126,12 @@ public static class DependencyInjection
         {
             throw new InvalidOperationException(
                 "JWT access token expiration must be positive.");
+        }
+
+        if (jwtOptions.RefreshTokenExpirationDays <= 0)
+        {
+            throw new InvalidOperationException(
+                "JWT refresh token expiration must be positive.");
         }
 
         byte[] signingKeyBytes;

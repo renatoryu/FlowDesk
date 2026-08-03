@@ -1,6 +1,7 @@
+using FlowDesk.Application.Abstractions.Persistence;
+using FlowDesk.Application.Common.Exceptions;
 using FlowDesk.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
-using FlowDesk.Application.Abstractions.Persistence;
 
 namespace FlowDesk.Infrastructure.Persistence;
 
@@ -14,9 +15,27 @@ public sealed class FlowDeskDbContext : DbContext, IUnitOfWork
 
     public DbSet<User> Users => Set<User>();
 
-    public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
+    public DbSet<RefreshToken> RefreshTokens =>
+        Set<RefreshToken>();
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    public override async Task<int> SaveChangesAsync(
+        CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            return await base.SaveChangesAsync(
+                cancellationToken);
+        }
+        catch (DbUpdateConcurrencyException exception)
+        {
+            throw new ConflictException(
+                "The operation conflicted with another request.",
+                exception);
+        }
+    }
+
+    protected override void OnModelCreating(
+        ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
 
