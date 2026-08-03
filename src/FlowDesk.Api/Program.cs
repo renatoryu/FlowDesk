@@ -1,11 +1,25 @@
+using FlowDesk.Api.ErrorHandling;
+using FlowDesk.Application.Authentication.Register;
 using FlowDesk.Infrastructure;
+using FluentValidation;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddInfrastructure(builder.Configuration);
+
+builder.Services.AddScoped<
+    IValidator<RegisterUserCommand>,
+    RegisterUserCommandValidator>();
+
+builder.Services.AddScoped<RegisterUserHandler>();
+
+builder.Services.AddProblemDetails();
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddControllers();
 
 var app = builder.Build();
+
+app.UseExceptionHandler();
 
 app.MapGet("/", () => Results.Ok(new
 {

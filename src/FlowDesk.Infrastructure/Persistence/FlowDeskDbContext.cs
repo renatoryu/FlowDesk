@@ -1,9 +1,10 @@
 using FlowDesk.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using FlowDesk.Application.Abstractions.Persistence;
 
 namespace FlowDesk.Infrastructure.Persistence;
 
-public sealed class FlowDeskDbContext : DbContext
+public sealed class FlowDeskDbContext : DbContext, IUnitOfWork
 {
     public FlowDeskDbContext(
         DbContextOptions<FlowDeskDbContext> options)
