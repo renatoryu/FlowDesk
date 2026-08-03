@@ -1,9 +1,0 @@
-<Solution>
-  <Folder Name="/src/">
-    <Project Path="FlowDesk.Api/FlowDesk.Api.csproj" Id="be193aa1-b008-42ac-97ed-0807aad08739" />
-    <Project Path="FlowDesk.Application/FlowDesk.Application.csproj" Id="3461a755-ee2a-41ff-93f3-42a277429754" />
-    <Project Path="FlowDesk.Domain/FlowDesk.Domain.csproj" Id="d350e207-1229-4a04-a690-b8d9dfd72496" />
-    <Project Path="FlowDesk.Infrastructure/FlowDesk.Infrastructure.csproj" Id="f4a97ebb-987b-4fb9-84fc-2618e526862a" />
-  </Folder>
-  <Folder Name="/tests/" />
-</Solution>
