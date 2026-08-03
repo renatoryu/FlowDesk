@@ -2,10 +2,17 @@ using FlowDesk.Api.ErrorHandling;
 using FlowDesk.Application.Authentication.Register;
 using FlowDesk.Infrastructure;
 using FluentValidation;
+using FlowDesk.Application.Authentication.Login;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddInfrastructure(builder.Configuration);
+
+builder.Services.AddScoped<
+    IValidator<LoginUserCommand>,
+    LoginUserCommandValidator>();
+
+builder.Services.AddScoped<LoginUserHandler>();
 
 builder.Services.AddScoped<
     IValidator<RegisterUserCommand>,

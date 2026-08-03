@@ -21,6 +21,13 @@ public sealed class GlobalExceptionHandler : IExceptionHandler
                 Detail = "One or more validation errors occurred."
             },
 
+            UnauthorizedException => new ProblemDetails
+            {
+                Status = StatusCodes.Status401Unauthorized,
+                Title = "Unauthorized.",
+                Detail = exception.Message
+            },
+
             ConflictException => new ProblemDetails
             {
                 Status = StatusCodes.Status409Conflict,
