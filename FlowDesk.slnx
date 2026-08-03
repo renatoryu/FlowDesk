@@ -1,7 +1,6 @@
 <Solution>
-  <Folder Name="/docs/">
+  <Folder Name="/Itens de Solução/">
     <File Path="README.md" />
-    <File Path="ROADMAP.md" />
   </Folder>
   <Folder Name="/src/">
     <Project Path="src/FlowDesk.Api/FlowDesk.Api.csproj" />
