@@ -6,7 +6,11 @@ O projeto está sendo desenvolvido com foco em aprendizado, boas práticas, port
 
 ## Estado do projeto
 
-🚧 Em desenvolvimento — Sprint 0: Preparação.
+✅ Sprint 1 concluída — autenticação de usuários com cadastro, login, JWT, refresh token rotativo e Swagger/OpenAPI.
+
+Próxima etapa: Sprint 2 — Empresas.
+
+A solução possui atualmente 20 testes unitários aprovados.
 
 ## Objetivos
 
@@ -81,28 +85,60 @@ FlowDesk
 └── README.md
 ```
 
-## Executando o estado atual
+## Executando localmente
 
-Pré-requisitos:
+### Pré-requisitos
 
 - Visual Studio com suporte ao .NET 10.
 - SDK do .NET 10.
+- SQL Server Express LocalDB.
 
-Passos:
+### 1. Configurar a chave JWT
+
+A chave de assinatura é armazenada com User Secrets e não deve ser adicionada ao Git.
+
+No terminal PowerShell, na raiz da solução:
+
+```powershell
+$jwtKeyBytes = New-Object byte[] 64
+$jwtRng = [System.Security.Cryptography.RandomNumberGenerator]::Create()
+$jwtRng.GetBytes($jwtKeyBytes)
+$jwtSigningKey = [Convert]::ToBase64String($jwtKeyBytes)
+
+dotnet user-secrets set "Jwt:SigningKey" $jwtSigningKey --project ".\src\FlowDesk.Api\FlowDesk.Api.csproj"
+
+$jwtRng.Dispose()
+Remove-Variable jwtKeyBytes, jwtSigningKey, jwtRng
+```
+
+### 2. Atualizar o banco de dados
+
+No Console do Gerenciador de Pacotes do Visual Studio:
+
+```powershell
+Update-Database -Project FlowDesk.Infrastructure -StartupProject FlowDesk.Api
+```
+
+### 3. Executar a API
 
 1. Abra `FlowDesk.slnx`.
 2. Defina `FlowDesk.Api` como projeto de inicialização.
-3. Execute com `Ctrl+F5`.
-4. Acesse a URL apresentada pelo Visual Studio.
+3. Execute com `Ctrl + F5`.
+4. Acesse `/swagger`.
 
-A rota inicial deve retornar:
+### Endpoints atuais
 
-```json
-{
-  "application": "FlowDesk.Api",
-  "status": "running"
-}
-```
+| Método | Endpoint | Autenticação | Finalidade |
+|---|---|---|---|
+| `GET` | `/` | Não | Verificar o estado da API |
+| `POST` | `/api/auth/register` | Não | Cadastrar usuário |
+| `POST` | `/api/auth/login` | Não | Obter access token e refresh token |
+| `POST` | `/api/auth/refresh` | Não | Renovar e rotacionar os tokens |
+| `GET` | `/api/auth/me` | Bearer JWT | Consultar o usuário autenticado |
+
+### Testes
+
+Abra o Gerenciador de Testes do Visual Studio e execute todos os testes. O estado atual possui 20 testes unitários.
 
 ## Fluxo de desenvolvimento
 
