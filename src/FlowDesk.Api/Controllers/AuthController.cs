@@ -1,6 +1,9 @@
 using FlowDesk.Application.Authentication.Login;
 using FlowDesk.Application.Authentication.Register;
 using Microsoft.AspNetCore.Mvc;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FlowDesk.Api.Controllers;
 
@@ -61,5 +64,26 @@ public sealed class AuthController : ControllerBase
                 cancellationToken);
 
         return Ok(result);
+    }
+
+    [Authorize]
+    [HttpGet("me")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public IActionResult GetCurrentUser()
+    {
+        return Ok(new
+        {
+            id = User.FindFirstValue(
+                JwtRegisteredClaimNames.Sub),
+
+            fullName = User.FindFirstValue(
+                JwtRegisteredClaimNames.Name),
+
+            email = User.FindFirstValue(
+                JwtRegisteredClaimNames.Email),
+
+            role = User.FindFirstValue("role")
+        });
     }
 }

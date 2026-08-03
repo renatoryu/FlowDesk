@@ -1,6 +1,7 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
     <RootNamespace>FlowDesk.Api</RootNamespace>
+    <UserSecretsId>2538eeef-2b26-4fbb-9097-77589136f844</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>

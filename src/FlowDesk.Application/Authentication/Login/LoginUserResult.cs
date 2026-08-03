@@ -4,4 +4,6 @@ public sealed record LoginUserResult(
     Guid Id,
     string FullName,
     string Email,
-    string Role);
+    string Role,
+    string AccessToken,
+    DateTime AccessTokenExpiresAtUtc);
