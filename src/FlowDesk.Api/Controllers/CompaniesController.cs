@@ -1,6 +1,8 @@
 using FlowDesk.Application.Companies.Create;
 using FlowDesk.Application.Companies.GetById;
 using FlowDesk.Application.Companies.List;
+using FlowDesk.Api.Contracts.Companies;
+using FlowDesk.Application.Companies.Update;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,15 +17,18 @@ public sealed class CompaniesController : ControllerBase
     private readonly CreateCompanyHandler _createCompanyHandler;
     private readonly GetCompanyByIdHandler _getCompanyByIdHandler;
     private readonly ListCompaniesHandler _listCompaniesHandler;
+    private readonly UpdateCompanyHandler _updateCompanyHandler;
 
     public CompaniesController(
         CreateCompanyHandler createCompanyHandler,
         GetCompanyByIdHandler getCompanyByIdHandler,
-        ListCompaniesHandler listCompaniesHandler)
+        ListCompaniesHandler listCompaniesHandler,
+        UpdateCompanyHandler updateCompanyHandler)
     {
         _createCompanyHandler = createCompanyHandler;
         _getCompanyByIdHandler = getCompanyByIdHandler;
         _listCompaniesHandler = listCompaniesHandler;
+        _updateCompanyHandler = updateCompanyHandler;
     }
 
     [HttpPost]
@@ -96,5 +101,37 @@ public sealed class CompaniesController : ControllerBase
 
         return Ok(result);
     }
+
+    [HttpPut("{id:guid}")]
+    [ProducesResponseType<UpdateCompanyResult>(
+    StatusCodes.Status200OK)]
+    [ProducesResponseType<ProblemDetails>(
+    StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(
+    StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType<ProblemDetails>(
+    StatusCodes.Status404NotFound)]
+    [ProducesResponseType<ProblemDetails>(
+    StatusCodes.Status409Conflict)]
+    [ProducesResponseType<ProblemDetails>(
+    StatusCodes.Status500InternalServerError)]
+    public async Task<ActionResult<UpdateCompanyResult>> Update(
+    Guid id,
+    UpdateCompanyRequest request,
+    CancellationToken cancellationToken)
+    {
+        var command = new UpdateCompanyCommand(
+            id,
+            request.Name,
+            request.ContactEmail);
+
+        UpdateCompanyResult result =
+            await _updateCompanyHandler.HandleAsync(
+                command,
+                cancellationToken);
+
+        return Ok(result);
+    }
+
 
 }

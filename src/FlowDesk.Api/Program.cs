@@ -5,6 +5,7 @@ using FlowDesk.Application.Authentication.Register;
 using FlowDesk.Application.Companies.Create;
 using FlowDesk.Application.Companies.GetById;
 using FlowDesk.Application.Companies.List;
+using FlowDesk.Application.Companies.Update;
 using FlowDesk.Infrastructure;
 using FluentValidation;
 using Microsoft.OpenApi;
@@ -37,9 +38,15 @@ builder.Services.AddScoped<
     IValidator<CreateCompanyCommand>,
     CreateCompanyCommandValidator>();
 
+builder.Services.AddScoped<
+    IValidator<UpdateCompanyCommand>,
+    UpdateCompanyCommandValidator>();
+
+builder.Services.AddScoped<UpdateCompanyHandler>();
 builder.Services.AddScoped<CreateCompanyHandler>();
 builder.Services.AddScoped<GetCompanyByIdHandler>();
 builder.Services.AddScoped<ListCompaniesHandler>();
+
 
 builder.Services.AddProblemDetails();
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
