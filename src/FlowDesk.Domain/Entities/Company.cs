@@ -8,6 +8,7 @@ public sealed class Company : BaseEntity
     public const int MaxNameLength = 150;
     public const int TaxIdLength = 14;
     public const int MaxContactEmailLength = 254;
+    public const int MaxTaxIdInputLength = 18;
 
     private Company()
     {
@@ -31,6 +32,33 @@ public sealed class Company : BaseEntity
     public string ContactEmail { get; private set; } = string.Empty;
 
     public bool IsActive { get; private set; }
+
+    public static bool IsValidTaxId(string? taxId)
+    {
+        if (string.IsNullOrWhiteSpace(taxId))
+        {
+            return false;
+        }
+
+        bool containsInvalidCharacter = taxId.Any(
+            character =>
+                !char.IsDigit(character) &&
+                character is not '.' and not '/' and not '-' &&
+                !char.IsWhiteSpace(character));
+
+        if (containsInvalidCharacter)
+        {
+            return false;
+        }
+
+        string normalized =
+            RemoveTaxIdFormatting(taxId);
+
+        return normalized.Length == TaxIdLength &&
+            !normalized.All(
+                digit => digit == normalized[0]) &&
+            HasValidCheckDigits(normalized);
+    }
 
     public void UpdateDetails(
         string name,
@@ -89,34 +117,14 @@ public sealed class Company : BaseEntity
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(taxId);
 
-        bool containsInvalidCharacter = taxId.Any(
-            character =>
-                !char.IsDigit(character) &&
-                character is not '.' and not '/' and not '-' &&
-                !char.IsWhiteSpace(character));
-
-        if (containsInvalidCharacter)
-        {
-            throw new ArgumentException(
-                "Tax id contains invalid characters.",
-                nameof(taxId));
-        }
-
-        string normalized = new(
-            taxId
-                .Where(char.IsDigit)
-                .ToArray());
-
-        if (normalized.Length != TaxIdLength ||
-            normalized.All(digit => digit == normalized[0]) ||
-            !HasValidCheckDigits(normalized))
+        if (!IsValidTaxId(taxId))
         {
             throw new ArgumentException(
                 "Tax id must be a valid CNPJ.",
                 nameof(taxId));
         }
 
-        return normalized;
+        return RemoveTaxIdFormatting(taxId);
     }
 
     private static string NormalizeContactEmail(
@@ -149,6 +157,15 @@ public sealed class Company : BaseEntity
         }
 
         return normalized;
+    }
+
+    private static string RemoveTaxIdFormatting(
+        string taxId)
+    {
+        return new string(
+            taxId
+                .Where(char.IsDigit)
+                .ToArray());
     }
 
     private static bool HasValidCheckDigits(
