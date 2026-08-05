@@ -130,9 +130,12 @@ O ambiente de desenvolvimento utiliza SQL Server Express LocalDB.
 
 ## Próximos aprimoramentos
 
-- Criar testes de aplicação e integração.
+- Ampliar a cobertura com testes de integração.
 - Configurar integração contínua para build e testes.
 - Adicionar limitação de tentativas nos endpoints de autenticação.
 - Implementar revogação de toda a família de refresh tokens após reutilização.
 - Configurar CORS junto à integração do front-end.
-- Iniciar a Sprint 2, responsável pelo gerenciamento de empresas.
+
+## Continuidade
+
+Os testes dos casos de uso e o gerenciamento de empresas foram adicionados na [Sprint 2 — Gerenciamento de empresas](SPRINT-2.md).

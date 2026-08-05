@@ -31,12 +31,12 @@ Este documento acompanha o desenvolvimento incremental do FlowDesk. Uma sprint s
 
 ## Sprint 2 — Empresas
 
-- [ ] Modelar a entidade `Company`.
-- [ ] Criar empresa.
-- [ ] Editar empresa.
-- [ ] Excluir empresa.
-- [ ] Listar empresas.
-- [ ] Consultar empresa por identificador.
+- [x] Modelar a entidade `Company`.
+- [x] Criar empresa.
+- [x] Editar empresa.
+- [x] Desativar empresa por exclusão lógica.
+- [x] Listar empresas.
+- [x] Consultar empresa por identificador.
 
 ## Sprint 3 — Chamados
 
