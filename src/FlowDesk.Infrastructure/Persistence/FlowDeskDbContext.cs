@@ -1,6 +1,7 @@
 using FlowDesk.Application.Abstractions.Persistence;
 using FlowDesk.Application.Common.Exceptions;
 using FlowDesk.Domain.Entities;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
 namespace FlowDesk.Infrastructure.Persistence;
@@ -34,6 +35,13 @@ public sealed class FlowDeskDbContext : DbContext, IUnitOfWork
                 "The operation conflicted with another request.",
                 exception);
         }
+        catch (DbUpdateException exception)
+            when (IsUniqueConstraintViolation(exception))
+        {
+            throw new ConflictException(
+                "The operation violated a unique constraint.",
+                exception);
+        }
     }
 
     protected override void OnModelCreating(
@@ -43,5 +51,14 @@ public sealed class FlowDeskDbContext : DbContext, IUnitOfWork
 
         modelBuilder.ApplyConfigurationsFromAssembly(
             typeof(FlowDeskDbContext).Assembly);
+    }
+
+    private static bool IsUniqueConstraintViolation(
+        DbUpdateException exception)
+    {
+        return exception.InnerException is SqlException
+        {
+            Number: 2601 or 2627
+        };
     }
 }
