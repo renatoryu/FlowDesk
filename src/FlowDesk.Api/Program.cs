@@ -4,10 +4,12 @@ using FlowDesk.Application.Authentication.Refresh;
 using FlowDesk.Application.Authentication.Register;
 using FlowDesk.Application.Companies.Create;
 using FlowDesk.Application.Companies.GetById;
+using FlowDesk.Application.Companies.List;
 using FlowDesk.Infrastructure;
 using FluentValidation;
 using Microsoft.OpenApi;
 using FlowDesk.Api.OpenApi;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -37,6 +39,7 @@ builder.Services.AddScoped<
 
 builder.Services.AddScoped<CreateCompanyHandler>();
 builder.Services.AddScoped<GetCompanyByIdHandler>();
+builder.Services.AddScoped<ListCompaniesHandler>();
 
 builder.Services.AddProblemDetails();
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();

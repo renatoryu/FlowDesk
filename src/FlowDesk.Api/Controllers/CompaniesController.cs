@@ -1,7 +1,9 @@
 using FlowDesk.Application.Companies.Create;
 using FlowDesk.Application.Companies.GetById;
+using FlowDesk.Application.Companies.List;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+
 
 namespace FlowDesk.Api.Controllers;
 
@@ -12,13 +14,16 @@ public sealed class CompaniesController : ControllerBase
 {
     private readonly CreateCompanyHandler _createCompanyHandler;
     private readonly GetCompanyByIdHandler _getCompanyByIdHandler;
+    private readonly ListCompaniesHandler _listCompaniesHandler;
 
     public CompaniesController(
         CreateCompanyHandler createCompanyHandler,
-        GetCompanyByIdHandler getCompanyByIdHandler)
+        GetCompanyByIdHandler getCompanyByIdHandler,
+        ListCompaniesHandler listCompaniesHandler)
     {
         _createCompanyHandler = createCompanyHandler;
         _getCompanyByIdHandler = getCompanyByIdHandler;
+        _listCompaniesHandler = listCompaniesHandler;
     }
 
     [HttpPost]
@@ -69,4 +74,27 @@ public sealed class CompaniesController : ControllerBase
 
         return Ok(result);
     }
+
+    [HttpGet]
+    [ProducesResponseType<IReadOnlyList<ListCompanyResult>>(
+    StatusCodes.Status200OK)]
+    [ProducesResponseType(
+    StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType<ProblemDetails>(
+    StatusCodes.Status500InternalServerError)]
+    public async Task<ActionResult<IReadOnlyList<ListCompanyResult>>> List(
+    CancellationToken cancellationToken,
+    [FromQuery] bool includeInactive = false)
+    {
+        var query =
+            new ListCompaniesQuery(includeInactive);
+
+        IReadOnlyList<ListCompanyResult> result =
+            await _listCompaniesHandler.HandleAsync(
+                query,
+                cancellationToken);
+
+        return Ok(result);
+    }
+
 }
