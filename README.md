@@ -12,6 +12,8 @@ Próxima etapa: Sprint 2 — Empresas.
 
 A solução possui atualmente 20 testes unitários aprovados.
 
+[Veja a documentação técnica da Sprint 1](docs/SPRINT-1.md).
+
 ## Objetivos
 
 - Aplicar conceitos de C# e ASP.NET Core.

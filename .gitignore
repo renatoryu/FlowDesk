@@ -40,3 +40,6 @@ Thumbs.db
 ## Temporary review artifacts
 tmp/
 
+## Generated publication files
+output/
+
