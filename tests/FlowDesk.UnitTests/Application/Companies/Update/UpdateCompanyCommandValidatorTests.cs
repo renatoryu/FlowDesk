@@ -29,7 +29,7 @@ public sealed class UpdateCompanyCommandValidatorTests
         var command = new UpdateCompanyCommand(
             Guid.Empty,
             string.Empty,
-            "invalid-email");
+            "invalid email@example.com");
 
         ValidationResult result =
             _validator.Validate(command);

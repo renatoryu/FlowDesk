@@ -29,7 +29,7 @@ public sealed class CreateCompanyCommandValidatorTests
         var command = new CreateCompanyCommand(
             string.Empty,
             "123",
-            "invalid-email");
+            "invalid email@example.com");
 
         ValidationResult result =
             _validator.Validate(command);

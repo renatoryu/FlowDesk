@@ -42,7 +42,7 @@ public sealed class Company : BaseEntity
 
         bool containsInvalidCharacter = taxId.Any(
             character =>
-                !char.IsDigit(character) &&
+                !IsAsciiDigit(character) &&
                 character is not '.' and not '/' and not '-' &&
                 !char.IsWhiteSpace(character));
 
@@ -58,6 +58,27 @@ public sealed class Company : BaseEntity
             !normalized.All(
                 digit => digit == normalized[0]) &&
             HasValidCheckDigits(normalized);
+    }
+
+    public static bool IsValidContactEmail(
+        string? contactEmail)
+    {
+        if (string.IsNullOrWhiteSpace(contactEmail))
+        {
+            return false;
+        }
+
+        string normalized =
+            contactEmail.Trim();
+
+        return normalized.Length <= MaxContactEmailLength &&
+            MailAddress.TryCreate(
+                normalized,
+                out MailAddress? parsedEmail) &&
+            string.Equals(
+                parsedEmail.Address,
+                normalized,
+                StringComparison.OrdinalIgnoreCase);
     }
 
     public void UpdateDetails(
@@ -143,13 +164,7 @@ public sealed class Company : BaseEntity
                 nameof(contactEmail));
         }
 
-        if (!MailAddress.TryCreate(
-                normalized,
-                out MailAddress? parsedEmail) ||
-            !string.Equals(
-                parsedEmail.Address,
-                normalized,
-                StringComparison.OrdinalIgnoreCase))
+        if (!IsValidContactEmail(normalized))
         {
             throw new ArgumentException(
                 "Contact email is invalid.",
@@ -164,8 +179,14 @@ public sealed class Company : BaseEntity
     {
         return new string(
             taxId
-                .Where(char.IsDigit)
+                .Where(IsAsciiDigit)
                 .ToArray());
+    }
+
+    private static bool IsAsciiDigit(
+        char character)
+    {
+        return character is >= '0' and <= '9';
     }
 
     private static bool HasValidCheckDigits(

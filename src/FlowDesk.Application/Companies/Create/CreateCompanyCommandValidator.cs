@@ -21,6 +21,8 @@ public sealed class CreateCompanyCommandValidator
         RuleFor(command => command.ContactEmail)
             .NotEmpty()
             .MaximumLength(Company.MaxContactEmailLength)
-            .EmailAddress();
+            .Must(contactEmail =>
+                Company.IsValidContactEmail(contactEmail))
+                .WithMessage("Contact email must be valid.");
     }
 }

@@ -4,6 +4,7 @@ namespace FlowDesk.UnitTests.Domain.Entities;
 
 public sealed class CompanyTests
 {
+
     private const string ValidTaxId =
         "12.345.678/0001-95";
 
@@ -50,6 +51,7 @@ public sealed class CompanyTests
     [InlineData("11.111.111/1111-11")]
     [InlineData("123")]
     [InlineData("12.345.678/0001-9A")]
+    [InlineData("١٢.٣٤٥.٦٧٨/٠٠٠١-95")]
     public void ConstructorWithInvalidTaxIdThrowsArgumentException(
         string invalidTaxId)
     {
@@ -67,6 +69,7 @@ public sealed class CompanyTests
     [InlineData("invalid")]
     [InlineData("contact@")]
     [InlineData("@flowdesk.com.br")]
+    [InlineData("invalid email@example.com")]
     public void ConstructorWithInvalidEmailThrowsArgumentException(
         string invalidEmail)
     {
