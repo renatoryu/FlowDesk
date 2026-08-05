@@ -1,3 +1,4 @@
+using FlowDesk.Api.Authorization;
 using FlowDesk.Api.Contracts.Companies;
 using FlowDesk.Application.Companies.Create;
 using FlowDesk.Application.Companies.Deactivate;
@@ -7,11 +8,9 @@ using FlowDesk.Application.Companies.Update;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-
 namespace FlowDesk.Api.Controllers;
 
 [ApiController]
-[Authorize]
 [Route("api/companies")]
 public sealed class CompaniesController : ControllerBase
 {
@@ -35,6 +34,7 @@ public sealed class CompaniesController : ControllerBase
         _deactivateCompanyHandler = deactivateCompanyHandler;
     }
 
+    [Authorize(Policy = AuthorizationPolicies.CompanyWrite)]
     [HttpPost]
     [ProducesResponseType<CreateCompanyResult>(
         StatusCodes.Status201Created)]
@@ -42,6 +42,8 @@ public sealed class CompaniesController : ControllerBase
         StatusCodes.Status400BadRequest)]
     [ProducesResponseType(
         StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(
+        StatusCodes.Status403Forbidden)]
     [ProducesResponseType<ProblemDetails>(
         StatusCodes.Status409Conflict)]
     [ProducesResponseType<ProblemDetails>(
@@ -61,11 +63,14 @@ public sealed class CompaniesController : ControllerBase
             result);
     }
 
+    [Authorize(Policy = AuthorizationPolicies.CompanyRead)]
     [HttpGet("{id:guid}")]
     [ProducesResponseType<GetCompanyByIdResult>(
         StatusCodes.Status200OK)]
     [ProducesResponseType(
         StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(
+        StatusCodes.Status403Forbidden)]
     [ProducesResponseType<ProblemDetails>(
         StatusCodes.Status404NotFound)]
     [ProducesResponseType<ProblemDetails>(
@@ -84,16 +89,19 @@ public sealed class CompaniesController : ControllerBase
         return Ok(result);
     }
 
+    [Authorize(Policy = AuthorizationPolicies.CompanyRead)]
     [HttpGet]
     [ProducesResponseType<IReadOnlyList<ListCompanyResult>>(
-    StatusCodes.Status200OK)]
+        StatusCodes.Status200OK)]
     [ProducesResponseType(
-    StatusCodes.Status401Unauthorized)]
+        StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(
+        StatusCodes.Status403Forbidden)]
     [ProducesResponseType<ProblemDetails>(
-    StatusCodes.Status500InternalServerError)]
+        StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<IReadOnlyList<ListCompanyResult>>> List(
-    CancellationToken cancellationToken,
-    [FromQuery] bool includeInactive = false)
+        CancellationToken cancellationToken,
+        [FromQuery] bool includeInactive = false)
     {
         var query =
             new ListCompaniesQuery(includeInactive);
@@ -106,23 +114,26 @@ public sealed class CompaniesController : ControllerBase
         return Ok(result);
     }
 
+    [Authorize(Policy = AuthorizationPolicies.CompanyWrite)]
     [HttpPut("{id:guid}")]
     [ProducesResponseType<UpdateCompanyResult>(
-    StatusCodes.Status200OK)]
+        StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(
-    StatusCodes.Status400BadRequest)]
+        StatusCodes.Status400BadRequest)]
     [ProducesResponseType(
-    StatusCodes.Status401Unauthorized)]
+        StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(
+        StatusCodes.Status403Forbidden)]
     [ProducesResponseType<ProblemDetails>(
-    StatusCodes.Status404NotFound)]
+        StatusCodes.Status404NotFound)]
     [ProducesResponseType<ProblemDetails>(
-    StatusCodes.Status409Conflict)]
+        StatusCodes.Status409Conflict)]
     [ProducesResponseType<ProblemDetails>(
-    StatusCodes.Status500InternalServerError)]
+        StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<UpdateCompanyResult>> Update(
-    Guid id,
-    UpdateCompanyRequest request,
-    CancellationToken cancellationToken)
+        Guid id,
+        UpdateCompanyRequest request,
+        CancellationToken cancellationToken)
     {
         var command = new UpdateCompanyCommand(
             id,
@@ -137,20 +148,23 @@ public sealed class CompaniesController : ControllerBase
         return Ok(result);
     }
 
+    [Authorize(Policy = AuthorizationPolicies.CompanyWrite)]
     [HttpDelete("{id:guid}")]
     [ProducesResponseType(
-    StatusCodes.Status204NoContent)]
+        StatusCodes.Status204NoContent)]
     [ProducesResponseType(
-    StatusCodes.Status401Unauthorized)]
+        StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(
+        StatusCodes.Status403Forbidden)]
     [ProducesResponseType<ProblemDetails>(
-    StatusCodes.Status404NotFound)]
+        StatusCodes.Status404NotFound)]
     [ProducesResponseType<ProblemDetails>(
-    StatusCodes.Status409Conflict)]
+        StatusCodes.Status409Conflict)]
     [ProducesResponseType<ProblemDetails>(
-    StatusCodes.Status500InternalServerError)]
+        StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> Delete(
-    Guid id,
-    CancellationToken cancellationToken)
+        Guid id,
+        CancellationToken cancellationToken)
     {
         await _deactivateCompanyHandler.HandleAsync(
             new DeactivateCompanyCommand(id),
@@ -158,6 +172,4 @@ public sealed class CompaniesController : ControllerBase
 
         return NoContent();
     }
-
-
 }

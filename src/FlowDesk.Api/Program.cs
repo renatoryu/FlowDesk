@@ -1,3 +1,4 @@
+using FlowDesk.Api.Authorization;
 using FlowDesk.Api.ErrorHandling;
 using FlowDesk.Api.OpenApi;
 using FlowDesk.Application.Authentication.Login;
@@ -8,14 +9,30 @@ using FlowDesk.Application.Companies.Deactivate;
 using FlowDesk.Application.Companies.GetById;
 using FlowDesk.Application.Companies.List;
 using FlowDesk.Application.Companies.Update;
+using FlowDesk.Domain.Enums;
 using FlowDesk.Infrastructure;
 using FluentValidation;
 using Microsoft.OpenApi;
 
 
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddInfrastructure(builder.Configuration);
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy(
+        AuthorizationPolicies.CompanyRead,
+        policy => policy.RequireRole(
+            nameof(UserRole.Admin),
+            nameof(UserRole.Agent)));
+
+    options.AddPolicy(
+        AuthorizationPolicies.CompanyWrite,
+        policy => policy.RequireRole(
+            nameof(UserRole.Admin)));
+});
 
 builder.Services.AddScoped<
     IValidator<LoginUserCommand>,
