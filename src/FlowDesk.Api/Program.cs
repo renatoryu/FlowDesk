@@ -3,6 +3,7 @@ using FlowDesk.Application.Authentication.Login;
 using FlowDesk.Application.Authentication.Refresh;
 using FlowDesk.Application.Authentication.Register;
 using FlowDesk.Application.Companies.Create;
+using FlowDesk.Application.Companies.GetById;
 using FlowDesk.Infrastructure;
 using FluentValidation;
 using Microsoft.OpenApi;
@@ -35,6 +36,7 @@ builder.Services.AddScoped<
     CreateCompanyCommandValidator>();
 
 builder.Services.AddScoped<CreateCompanyHandler>();
+builder.Services.AddScoped<GetCompanyByIdHandler>();
 
 builder.Services.AddProblemDetails();
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
