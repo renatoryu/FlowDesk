@@ -3,6 +3,7 @@ using FlowDesk.Application.Companies.GetById;
 using FlowDesk.Application.Companies.List;
 using FlowDesk.Api.Contracts.Companies;
 using FlowDesk.Application.Companies.Update;
+using FlowDesk.Application.Companies.Deactivate;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,17 +19,20 @@ public sealed class CompaniesController : ControllerBase
     private readonly GetCompanyByIdHandler _getCompanyByIdHandler;
     private readonly ListCompaniesHandler _listCompaniesHandler;
     private readonly UpdateCompanyHandler _updateCompanyHandler;
+    private readonly DeactivateCompanyHandler _deactivateCompanyHandler;
 
     public CompaniesController(
         CreateCompanyHandler createCompanyHandler,
         GetCompanyByIdHandler getCompanyByIdHandler,
         ListCompaniesHandler listCompaniesHandler,
-        UpdateCompanyHandler updateCompanyHandler)
+        UpdateCompanyHandler updateCompanyHandler,
+        DeactivateCompanyHandler deactivateCompanyHandler)
     {
         _createCompanyHandler = createCompanyHandler;
         _getCompanyByIdHandler = getCompanyByIdHandler;
         _listCompaniesHandler = listCompaniesHandler;
         _updateCompanyHandler = updateCompanyHandler;
+        _deactivateCompanyHandler = deactivateCompanyHandler;
     }
 
     [HttpPost]
@@ -131,6 +135,28 @@ public sealed class CompaniesController : ControllerBase
                 cancellationToken);
 
         return Ok(result);
+    }
+
+    [HttpDelete("{id:guid}")]
+    [ProducesResponseType(
+    StatusCodes.Status204NoContent)]
+    [ProducesResponseType(
+    StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType<ProblemDetails>(
+    StatusCodes.Status404NotFound)]
+    [ProducesResponseType<ProblemDetails>(
+    StatusCodes.Status409Conflict)]
+    [ProducesResponseType<ProblemDetails>(
+    StatusCodes.Status500InternalServerError)]
+    public async Task<IActionResult> Delete(
+    Guid id,
+    CancellationToken cancellationToken)
+    {
+        await _deactivateCompanyHandler.HandleAsync(
+            new DeactivateCompanyCommand(id),
+            cancellationToken);
+
+        return NoContent();
     }
 
 

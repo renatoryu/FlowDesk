@@ -6,6 +6,7 @@ using FlowDesk.Application.Companies.Create;
 using FlowDesk.Application.Companies.GetById;
 using FlowDesk.Application.Companies.List;
 using FlowDesk.Application.Companies.Update;
+using FlowDesk.Application.Companies.Deactivate;
 using FlowDesk.Infrastructure;
 using FluentValidation;
 using Microsoft.OpenApi;
@@ -46,6 +47,7 @@ builder.Services.AddScoped<UpdateCompanyHandler>();
 builder.Services.AddScoped<CreateCompanyHandler>();
 builder.Services.AddScoped<GetCompanyByIdHandler>();
 builder.Services.AddScoped<ListCompaniesHandler>();
+builder.Services.AddScoped<DeactivateCompanyHandler>();
 
 
 builder.Services.AddProblemDetails();
