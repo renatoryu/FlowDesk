@@ -1,9 +1,9 @@
+using FlowDesk.Api.Contracts.Companies;
 using FlowDesk.Application.Companies.Create;
+using FlowDesk.Application.Companies.Deactivate;
 using FlowDesk.Application.Companies.GetById;
 using FlowDesk.Application.Companies.List;
-using FlowDesk.Api.Contracts.Companies;
 using FlowDesk.Application.Companies.Update;
-using FlowDesk.Application.Companies.Deactivate;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

@@ -1,16 +1,16 @@
 using FlowDesk.Api.ErrorHandling;
+using FlowDesk.Api.OpenApi;
 using FlowDesk.Application.Authentication.Login;
 using FlowDesk.Application.Authentication.Refresh;
 using FlowDesk.Application.Authentication.Register;
 using FlowDesk.Application.Companies.Create;
+using FlowDesk.Application.Companies.Deactivate;
 using FlowDesk.Application.Companies.GetById;
 using FlowDesk.Application.Companies.List;
 using FlowDesk.Application.Companies.Update;
-using FlowDesk.Application.Companies.Deactivate;
 using FlowDesk.Infrastructure;
 using FluentValidation;
 using Microsoft.OpenApi;
-using FlowDesk.Api.OpenApi;
 
 
 var builder = WebApplication.CreateBuilder(args);
