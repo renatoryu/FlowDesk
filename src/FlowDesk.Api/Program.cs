@@ -1,15 +1,38 @@
+using FlowDesk.Api.Authorization;
 using FlowDesk.Api.ErrorHandling;
+using FlowDesk.Api.OpenApi;
 using FlowDesk.Application.Authentication.Login;
 using FlowDesk.Application.Authentication.Refresh;
 using FlowDesk.Application.Authentication.Register;
+using FlowDesk.Application.Companies.Create;
+using FlowDesk.Application.Companies.Deactivate;
+using FlowDesk.Application.Companies.GetById;
+using FlowDesk.Application.Companies.List;
+using FlowDesk.Application.Companies.Update;
+using FlowDesk.Domain.Enums;
 using FlowDesk.Infrastructure;
 using FluentValidation;
 using Microsoft.OpenApi;
-using FlowDesk.Api.OpenApi;
+
+
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddInfrastructure(builder.Configuration);
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy(
+        AuthorizationPolicies.CompanyRead,
+        policy => policy.RequireRole(
+            nameof(UserRole.Admin),
+            nameof(UserRole.Agent)));
+
+    options.AddPolicy(
+        AuthorizationPolicies.CompanyWrite,
+        policy => policy.RequireRole(
+            nameof(UserRole.Admin)));
+});
 
 builder.Services.AddScoped<
     IValidator<LoginUserCommand>,
@@ -28,6 +51,21 @@ builder.Services.AddScoped<
     RegisterUserCommandValidator>();
 
 builder.Services.AddScoped<RegisterUserHandler>();
+
+builder.Services.AddScoped<
+    IValidator<CreateCompanyCommand>,
+    CreateCompanyCommandValidator>();
+
+builder.Services.AddScoped<
+    IValidator<UpdateCompanyCommand>,
+    UpdateCompanyCommandValidator>();
+
+builder.Services.AddScoped<UpdateCompanyHandler>();
+builder.Services.AddScoped<CreateCompanyHandler>();
+builder.Services.AddScoped<GetCompanyByIdHandler>();
+builder.Services.AddScoped<ListCompaniesHandler>();
+builder.Services.AddScoped<DeactivateCompanyHandler>();
+
 
 builder.Services.AddProblemDetails();
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();

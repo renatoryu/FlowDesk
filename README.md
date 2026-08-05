@@ -8,11 +8,14 @@ O projeto está sendo desenvolvido com foco em aprendizado, boas práticas, port
 
 ✅ Sprint 1 concluída — autenticação de usuários com cadastro, login, JWT, refresh token rotativo e Swagger/OpenAPI.
 
-Próxima etapa: Sprint 2 — Empresas.
+✅ Sprint 2 concluída — gerenciamento de empresas com validação de CNPJ, CRUD protegido por perfis e exclusão lógica.
 
-A solução possui atualmente 20 testes unitários aprovados.
+Próxima etapa: Sprint 3 — Chamados.
 
-[Veja a documentação técnica da Sprint 1](docs/SPRINT-1.md).
+A solução possui atualmente 53 testes unitários aprovados.
+
+- [Documentação técnica da Sprint 1](docs/SPRINT-1.md)
+- [Documentação técnica da Sprint 2](docs/SPRINT-2.md)
 
 ## Objetivos
 
@@ -137,10 +140,15 @@ Update-Database -Project FlowDesk.Infrastructure -StartupProject FlowDesk.Api
 | `POST` | `/api/auth/login` | Não | Obter access token e refresh token |
 | `POST` | `/api/auth/refresh` | Não | Renovar e rotacionar os tokens |
 | `GET` | `/api/auth/me` | Bearer JWT | Consultar o usuário autenticado |
+| `POST` | `/api/companies` | Admin JWT | Cadastrar empresa |
+| `GET` | `/api/companies` | Admin/Agent JWT | Listar empresas e filtrar inativas |
+| `GET` | `/api/companies/{id}` | Admin/Agent JWT | Consultar empresa por identificador |
+| `PUT` | `/api/companies/{id}` | Admin JWT | Atualizar nome e e-mail da empresa |
+| `DELETE` | `/api/companies/{id}` | Admin JWT | Desativar logicamente a empresa |
 
 ### Testes
 
-Abra o Gerenciador de Testes do Visual Studio e execute todos os testes. O estado atual possui 20 testes unitários.
+Abra o Gerenciador de Testes do Visual Studio e execute todos os testes. O estado atual possui 53 testes unitários aprovados.
 
 ## Fluxo de desenvolvimento
 
@@ -164,4 +172,4 @@ chore:
 
 ## Roadmap
 
-O projeto será desenvolvido incrementalmente, da preparação inicial ao deploy, conforme o roadmap disponível na pasta `docs`.
+O projeto será desenvolvido incrementalmente, da preparação inicial ao deploy, conforme o [roadmap detalhado](docs/ROADMAP.md).

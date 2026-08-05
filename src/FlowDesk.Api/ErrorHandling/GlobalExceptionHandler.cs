@@ -28,6 +28,13 @@ public sealed class GlobalExceptionHandler : IExceptionHandler
                 Detail = exception.Message
             },
 
+            NotFoundException => new ProblemDetails
+            {
+                Status = StatusCodes.Status404NotFound,
+                Title = "Resource not found.",
+                Detail = exception.Message
+            },
+
             ConflictException => new ProblemDetails
             {
                 Status = StatusCodes.Status409Conflict,

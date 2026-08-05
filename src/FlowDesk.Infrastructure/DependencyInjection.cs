@@ -27,6 +27,10 @@ public static class DependencyInjection
         services.AddDbContext<FlowDeskDbContext>(
             options => options.UseSqlServer(connectionString));
 
+        services.AddScoped<
+            ICompanyRepository,
+            CompanyRepository>();
+
         services.AddScoped<IUserRepository, UserRepository>();
 
         services.AddScoped<
