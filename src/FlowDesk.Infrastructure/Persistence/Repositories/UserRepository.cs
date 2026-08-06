@@ -33,6 +33,16 @@ public sealed class UserRepository : IUserRepository
                 cancellationToken);
     }
 
+    public Task<User?> GetForUpdateAsync(
+    Guid userId,
+    CancellationToken cancellationToken = default)
+    {
+        return _dbContext.Users
+            .SingleOrDefaultAsync(
+                user => user.Id == userId,
+                cancellationToken);
+    }
+
     public async Task AddAsync(
         User user,
         CancellationToken cancellationToken = default)
