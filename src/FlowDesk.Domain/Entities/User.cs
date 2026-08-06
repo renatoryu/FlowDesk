@@ -34,6 +34,7 @@ public sealed class User : BaseEntity
     public string PasswordHash { get; private set; } = string.Empty;
 
     public UserRole Role { get; private set; }
+    public Guid? CompanyId { get; private set; }
 
     public bool IsActive { get; private set; }
 
@@ -53,6 +54,35 @@ public sealed class User : BaseEntity
     public void ChangeRole(UserRole role)
     {
         Role = ValidateRole(role);
+        MarkAsUpdated();
+    }
+
+    public void AssignToCompany(Guid companyId)
+    {
+        if (companyId == Guid.Empty)
+        {
+            throw new ArgumentException(
+                "Company id cannot be empty.",
+                nameof(companyId));
+        }
+
+        if (CompanyId == companyId)
+        {
+            return;
+        }
+
+        CompanyId = companyId;
+        MarkAsUpdated();
+    }
+
+    public void RemoveFromCompany()
+    {
+        if (CompanyId is null)
+        {
+            return;
+        }
+
+        CompanyId = null;
         MarkAsUpdated();
     }
 
