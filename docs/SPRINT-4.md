@@ -95,6 +95,7 @@ A empresa não é repetida em `Comments`: ela é obtida a partir do chamado, evi
 ## Rastreabilidade
 
 - [Issue #14 — Sprint 4: comentários e histórico de chamados](https://github.com/renatoryu/FlowDesk/issues/14)
+- [Pull Request #15 — comentários e histórico para develop](https://github.com/renatoryu/FlowDesk/pull/15)
 
 ## Próximos aprimoramentos
 
