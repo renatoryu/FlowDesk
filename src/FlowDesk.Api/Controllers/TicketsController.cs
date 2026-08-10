@@ -1,6 +1,7 @@
 using FlowDesk.Api.Authorization;
 using FlowDesk.Api.Contracts.Tickets;
 using FlowDesk.Application.Tickets.Create;
+using FlowDesk.Application.Tickets.GetById;
 using FlowDesk.Application.Tickets.List;
 using FlowDesk.Domain.Enums;
 using Microsoft.AspNetCore.Authorization;
@@ -14,13 +15,16 @@ namespace FlowDesk.Api.Controllers;
 public sealed class TicketsController : ControllerBase
 {
     private readonly CreateTicketHandler _createTicketHandler;
+    private readonly GetTicketByIdHandler _getTicketByIdHandler;
     private readonly ListTicketsHandler _listTicketsHandler;
 
     public TicketsController(
         CreateTicketHandler createTicketHandler,
+        GetTicketByIdHandler getTicketByIdHandler,
         ListTicketsHandler listTicketsHandler)
     {
         _createTicketHandler = createTicketHandler;
+        _getTicketByIdHandler = getTicketByIdHandler;
         _listTicketsHandler = listTicketsHandler;
     }
 
@@ -55,8 +59,9 @@ public sealed class TicketsController : ControllerBase
                 command,
                 cancellationToken);
 
-        return StatusCode(
-            StatusCodes.Status201Created,
+        return CreatedAtAction(
+            nameof(GetById),
+            new { id = result.Id },
             result);
     }
 
@@ -92,6 +97,34 @@ public sealed class TicketsController : ControllerBase
         ListTicketsResult result =
             await _listTicketsHandler.HandleAsync(
                 query,
+                cancellationToken);
+
+        return Ok(result);
+    }
+
+    [HttpGet("{id:guid}")]
+    [Authorize(Policy = AuthorizationPolicies.TicketRead)]
+    [ProducesResponseType<GetTicketByIdResult>(
+        StatusCodes.Status200OK)]
+    [ProducesResponseType<ProblemDetails>(
+        StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(
+        StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(
+        StatusCodes.Status403Forbidden)]
+    [ProducesResponseType<ProblemDetails>(
+        StatusCodes.Status404NotFound)]
+    [ProducesResponseType<ProblemDetails>(
+        StatusCodes.Status409Conflict)]
+    [ProducesResponseType<ProblemDetails>(
+        StatusCodes.Status500InternalServerError)]
+    public async Task<ActionResult<GetTicketByIdResult>> GetById(
+        Guid id,
+        CancellationToken cancellationToken)
+    {
+        GetTicketByIdResult result =
+            await _getTicketByIdHandler.HandleAsync(
+                new GetTicketByIdQuery(id),
                 cancellationToken);
 
         return Ok(result);
