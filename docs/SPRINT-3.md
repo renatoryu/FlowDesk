@@ -130,6 +130,7 @@ A persistência inclui:
 ## Rastreabilidade
 
 - [Issue #11 — Sprint 3: gerenciamento de chamados](https://github.com/renatoryu/FlowDesk/issues/11)
+- [Pull Request #12 — gerenciamento de chamados para develop](https://github.com/renatoryu/FlowDesk/pull/12)
 
 ## Próximos aprimoramentos
 
