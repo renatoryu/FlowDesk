@@ -1,4 +1,5 @@
 using FlowDesk.Application.Common.Exceptions;
+using FlowDesk.Domain.Common;
 using FluentValidation;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
@@ -28,6 +29,13 @@ public sealed class GlobalExceptionHandler : IExceptionHandler
                 Detail = exception.Message
             },
 
+            ForbiddenException => new ProblemDetails
+            {
+                Status = StatusCodes.Status403Forbidden,
+                Title = "Forbidden.",
+                Detail = exception.Message
+            },
+
             NotFoundException => new ProblemDetails
             {
                 Status = StatusCodes.Status404NotFound,
@@ -39,6 +47,13 @@ public sealed class GlobalExceptionHandler : IExceptionHandler
             {
                 Status = StatusCodes.Status409Conflict,
                 Title = "Conflict.",
+                Detail = exception.Message
+            },
+
+            DomainRuleException => new ProblemDetails
+            {
+                Status = StatusCodes.Status409Conflict,
+                Title = "Business rule violation.",
                 Detail = exception.Message
             },
 
