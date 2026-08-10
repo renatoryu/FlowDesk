@@ -7,6 +7,8 @@ using FlowDesk.Application.Authentication.Login;
 using FlowDesk.Application.Authentication.Refresh;
 using FlowDesk.Application.Authentication.Register;
 using FlowDesk.Application.Categories.List;
+using FlowDesk.Application.Comments.Create;
+using FlowDesk.Application.Comments.List;
 using FlowDesk.Application.Companies.Create;
 using FlowDesk.Application.Companies.Deactivate;
 using FlowDesk.Application.Companies.GetById;
@@ -84,6 +86,19 @@ builder.Services.AddAuthorization(options =>
             nameof(UserRole.Customer),
             nameof(UserRole.Agent),
             nameof(UserRole.Admin)));
+    options.AddPolicy(
+        AuthorizationPolicies.CommentCreate,
+        policy => policy.RequireRole(
+            nameof(UserRole.Customer),
+            nameof(UserRole.Agent),
+            nameof(UserRole.Admin)));
+
+    options.AddPolicy(
+        AuthorizationPolicies.CommentRead,
+        policy => policy.RequireRole(
+            nameof(UserRole.Customer),
+            nameof(UserRole.Agent),
+            nameof(UserRole.Admin)));
 });
 
 builder.Services.AddScoped<
@@ -140,6 +155,14 @@ builder.Services.AddScoped<
     IValidator<DeleteTicketCommand>,
     DeleteTicketCommandValidator>();
 
+builder.Services.AddScoped<
+    IValidator<CreateCommentCommand>,
+    CreateCommentCommandValidator>();
+
+builder.Services.AddScoped<
+    IValidator<ListTicketCommentsQuery>,
+    ListTicketCommentsQueryValidator>();
+
 builder.Services.AddScoped<AssignUserCompanyHandler>();
 builder.Services.AddScoped<ListCategoriesHandler>();
 builder.Services.AddScoped<UpdateCompanyHandler>();
@@ -153,6 +176,8 @@ builder.Services.AddScoped<GetTicketByIdHandler>();
 builder.Services.AddScoped<UpdateTicketHandler>();
 builder.Services.AddScoped<ChangeTicketStatusHandler>();
 builder.Services.AddScoped<DeleteTicketHandler>();
+builder.Services.AddScoped<CreateCommentHandler>();
+builder.Services.AddScoped<ListTicketCommentsHandler>();
 
 builder.Services.AddProblemDetails();
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();

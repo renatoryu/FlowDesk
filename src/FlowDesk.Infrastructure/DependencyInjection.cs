@@ -39,6 +39,10 @@ public static class DependencyInjection
             ITicketRepository,
             TicketRepository>();
 
+        services.AddScoped<
+            ICommentRepository,
+            CommentRepository>();
+
         services.AddScoped<IUserRepository, UserRepository>();
 
         services.AddScoped<

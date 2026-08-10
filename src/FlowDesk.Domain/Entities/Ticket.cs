@@ -177,6 +177,17 @@ public sealed class Ticket : BaseEntity
         MarkAsUpdated();
     }
 
+    public void EnsureCanReceiveComments()
+    {
+        EnsureNotDeleted();
+
+        if (Status == TicketStatus.Closed)
+        {
+            throw new DomainRuleException(
+                "Closed tickets cannot receive comments.");
+        }
+    }
+
     private static Guid ValidateRequiredId(
         Guid id,
         string parameterName)

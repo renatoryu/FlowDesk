@@ -10,4 +10,6 @@ public static class AuthorizationPolicies
     public const string TicketUpdate = "TicketUpdate";
     public const string TicketStatusChange = "TicketStatusChange";
     public const string TicketDelete = "TicketDelete";
+    public const string CommentCreate = "CommentCreate";
+    public const string CommentRead = "CommentRead";
 }
