@@ -22,6 +22,101 @@ namespace FlowDesk.Infrastructure.Persistence.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("FlowDesk.Domain.Entities.Category", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAtUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("NormalizedName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<DateTime>("UpdatedAtUtc")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedName")
+                        .IsUnique()
+                        .HasDatabaseName("UX_Categories_NormalizedName");
+
+                    b.ToTable("Categories", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("11111111-1111-1111-1111-111111111111"),
+                            CreatedAtUtc = new DateTime(2026, 8, 6, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "General service requests.",
+                            IsActive = true,
+                            Name = "General",
+                            NormalizedName = "GENERAL",
+                            UpdatedAtUtc = new DateTime(2026, 8, 6, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            Id = new Guid("22222222-2222-2222-2222-222222222222"),
+                            CreatedAtUtc = new DateTime(2026, 8, 6, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Authentication and permission problems.",
+                            IsActive = true,
+                            Name = "Access",
+                            NormalizedName = "ACCESS",
+                            UpdatedAtUtc = new DateTime(2026, 8, 6, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            Id = new Guid("33333333-3333-3333-3333-333333333333"),
+                            CreatedAtUtc = new DateTime(2026, 8, 6, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Physical equipment and device problems.",
+                            IsActive = true,
+                            Name = "Hardware",
+                            NormalizedName = "HARDWARE",
+                            UpdatedAtUtc = new DateTime(2026, 8, 6, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            Id = new Guid("44444444-4444-4444-4444-444444444444"),
+                            CreatedAtUtc = new DateTime(2026, 8, 6, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Application and software problems.",
+                            IsActive = true,
+                            Name = "Software",
+                            NormalizedName = "SOFTWARE",
+                            UpdatedAtUtc = new DateTime(2026, 8, 6, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            Id = new Guid("55555555-5555-5555-5555-555555555555"),
+                            CreatedAtUtc = new DateTime(2026, 8, 6, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Connectivity and network problems.",
+                            IsActive = true,
+                            Name = "Network",
+                            NormalizedName = "NETWORK",
+                            UpdatedAtUtc = new DateTime(2026, 8, 6, 0, 0, 0, 0, DateTimeKind.Utc)
+                        });
+                });
+
             modelBuilder.Entity("FlowDesk.Domain.Entities.Company", b =>
                 {
                     b.Property<Guid>("Id")
@@ -111,9 +206,100 @@ namespace FlowDesk.Infrastructure.Persistence.Migrations
                     b.ToTable("RefreshTokens", (string)null);
                 });
 
+            modelBuilder.Entity("FlowDesk.Domain.Entities.Ticket", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CategoryId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("ClosedAtUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("CompanyId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAtUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedAtUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("DeletedByUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(4000)
+                        .HasColumnType("nvarchar(4000)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<byte>("Priority")
+                        .HasColumnType("tinyint");
+
+                    b.Property<Guid>("RequesterId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("ResolvedAtUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<byte>("Status")
+                        .HasColumnType("tinyint");
+
+                    b.Property<DateTime>("StatusChangedAtUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<DateTime>("UpdatedAtUtc")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId")
+                        .HasFilter("[IsDeleted] = 0");
+
+                    b.HasIndex("DeletedByUserId");
+
+                    b.HasIndex("RequesterId", "CreatedAtUtc")
+                        .HasFilter("[IsDeleted] = 0");
+
+                    b.HasIndex("Status", "CreatedAtUtc")
+                        .HasFilter("[IsDeleted] = 0");
+
+                    b.HasIndex("CompanyId", "Status", "CreatedAtUtc")
+                        .HasFilter("[IsDeleted] = 0");
+
+                    b.ToTable("Tickets", null, t =>
+                        {
+                            t.HasCheckConstraint("CK_Tickets_LogicalDeletion", "([IsDeleted] = 0 AND [DeletedAtUtc] IS NULL AND [DeletedByUserId] IS NULL) OR ([IsDeleted] = 1 AND [DeletedAtUtc] IS NOT NULL AND [DeletedByUserId] IS NOT NULL)");
+
+                            t.HasCheckConstraint("CK_Tickets_Priority", "[Priority] IN (1, 2, 3, 4)");
+
+                            t.HasCheckConstraint("CK_Tickets_Status", "[Status] IN (1, 2, 3, 4)");
+
+                            t.HasCheckConstraint("CK_Tickets_StatusDates", "([Status] IN (1, 2) AND [ResolvedAtUtc] IS NULL AND [ClosedAtUtc] IS NULL) OR ([Status] = 3 AND [ResolvedAtUtc] IS NOT NULL AND [ClosedAtUtc] IS NULL) OR ([Status] = 4 AND [ResolvedAtUtc] IS NOT NULL AND [ClosedAtUtc] IS NOT NULL)");
+                        });
+                });
+
             modelBuilder.Entity("FlowDesk.Domain.Entities.User", b =>
                 {
                     b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("CompanyId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedAtUtc")
@@ -145,6 +331,8 @@ namespace FlowDesk.Infrastructure.Persistence.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CompanyId");
+
                     b.HasIndex("Email")
                         .IsUnique();
 
@@ -158,6 +346,40 @@ namespace FlowDesk.Infrastructure.Persistence.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("FlowDesk.Domain.Entities.Ticket", b =>
+                {
+                    b.HasOne("FlowDesk.Domain.Entities.Category", null)
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("FlowDesk.Domain.Entities.Company", null)
+                        .WithMany()
+                        .HasForeignKey("CompanyId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("FlowDesk.Domain.Entities.User", null)
+                        .WithMany()
+                        .HasForeignKey("DeletedByUserId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("FlowDesk.Domain.Entities.User", null)
+                        .WithMany()
+                        .HasForeignKey("RequesterId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("FlowDesk.Domain.Entities.User", b =>
+                {
+                    b.HasOne("FlowDesk.Domain.Entities.Company", null)
+                        .WithMany()
+                        .HasForeignKey("CompanyId")
+                        .OnDelete(DeleteBehavior.NoAction);
                 });
 #pragma warning restore 612, 618
         }

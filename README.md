@@ -10,12 +10,15 @@ O projeto está sendo desenvolvido com foco em aprendizado, boas práticas, port
 
 ✅ Sprint 2 concluída — gerenciamento de empresas com validação de CNPJ, CRUD protegido por perfis e exclusão lógica.
 
-Próxima etapa: Sprint 3 — Chamados.
+✅ Sprint 3 concluída — gerenciamento completo de chamados, com categorias, paginação, filtros, atualização, status controlado, exclusão lógica e autorização por perfil.
 
-A solução possui atualmente 53 testes unitários aprovados.
+Próxima etapa: Sprint 4 — Comentários e histórico dos chamados.
+
+A solução possui atualmente 157 testes unitários aprovados.
 
 - [Documentação técnica da Sprint 1](docs/SPRINT-1.md)
 - [Documentação técnica da Sprint 2](docs/SPRINT-2.md)
+- [Documentação técnica da Sprint 3](docs/SPRINT-3.md)
 
 ## Objetivos
 
@@ -138,17 +141,25 @@ Update-Database -Project FlowDesk.Infrastructure -StartupProject FlowDesk.Api
 | `GET` | `/` | Não | Verificar o estado da API |
 | `POST` | `/api/auth/register` | Não | Cadastrar usuário |
 | `POST` | `/api/auth/login` | Não | Obter access token e refresh token |
-| `POST` | `/api/auth/refresh` | Não | Renovar e rotacionar os tokens |
+| `POST` | `/api/auth/refresh` | Refresh token | Renovar e rotacionar os tokens |
 | `GET` | `/api/auth/me` | Bearer JWT | Consultar o usuário autenticado |
 | `POST` | `/api/companies` | Admin JWT | Cadastrar empresa |
 | `GET` | `/api/companies` | Admin/Agent JWT | Listar empresas e filtrar inativas |
 | `GET` | `/api/companies/{id}` | Admin/Agent JWT | Consultar empresa por identificador |
 | `PUT` | `/api/companies/{id}` | Admin JWT | Atualizar nome e e-mail da empresa |
 | `DELETE` | `/api/companies/{id}` | Admin JWT | Desativar logicamente a empresa |
+| `PUT` | `/api/users/{id}/company` | Admin JWT | Vincular Customer a uma empresa |
+| `GET` | `/api/categories` | Bearer JWT | Listar categorias ativas |
+| `POST` | `/api/tickets` | Customer JWT | Criar chamado |
+| `GET` | `/api/tickets` | Customer próprio, Agent ou Admin | Listar chamados |
+| `GET` | `/api/tickets/{id}` | Customer próprio, Agent ou Admin | Consultar chamado |
+| `PUT` | `/api/tickets/{id}` | Customer próprio, Agent ou Admin | Atualizar detalhes |
+| `PATCH` | `/api/tickets/{id}/status` | Customer com restrição, Agent ou Admin | Alterar status |
+| `DELETE` | `/api/tickets/{id}` | Customer próprio, Agent ou Admin | Excluir logicamente |
 
 ### Testes
 
-Abra o Gerenciador de Testes do Visual Studio e execute todos os testes. O estado atual possui 53 testes unitários aprovados.
+Abra o Gerenciador de Testes do Visual Studio e execute todos os testes. O estado atual possui 157 testes unitários aprovados.
 
 ## Fluxo de desenvolvimento
 

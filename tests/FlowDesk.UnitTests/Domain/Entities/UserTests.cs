@@ -27,6 +27,7 @@ public sealed class UserTests
         Assert.True(user.IsActive);
         Assert.InRange(user.CreatedAtUtc, beforeCreation, afterCreation);
         Assert.Equal(user.CreatedAtUtc, user.UpdatedAtUtc);
+        Assert.Null(user.CompanyId);
     }
 
     [Theory]
@@ -109,6 +110,65 @@ public sealed class UserTests
 
         Assert.Throws<ArgumentOutOfRangeException>(
             () => user.ChangeRole((UserRole)999));
+    }
+
+    [Fact]
+    public void AssignToCompanyWithValidIdUpdatesCompany()
+    {
+        User user = CreateUser();
+        Guid companyId = Guid.NewGuid();
+
+        user.AssignToCompany(companyId);
+
+        Assert.Equal(companyId, user.CompanyId);
+    }
+
+    [Fact]
+    public void AssignToCompanyWithEmptyIdThrowsArgumentException()
+    {
+        User user = CreateUser();
+
+        ArgumentException exception =
+            Assert.Throws<ArgumentException>(
+                () => user.AssignToCompany(Guid.Empty));
+
+        Assert.Equal("companyId", exception.ParamName);
+        Assert.Null(user.CompanyId);
+    }
+
+    [Fact]
+    public void AssigningSameCompanyIsIdempotent()
+    {
+        User user = CreateUser();
+        Guid companyId = Guid.NewGuid();
+
+        user.AssignToCompany(companyId);
+
+        DateTime assignedAt = user.UpdatedAtUtc;
+
+        user.AssignToCompany(companyId);
+
+        Assert.Equal(companyId, user.CompanyId);
+        Assert.Equal(assignedAt, user.UpdatedAtUtc);
+    }
+
+    [Fact]
+    public void RemoveFromCompanyIsIdempotent()
+    {
+        User user = CreateUser();
+        Guid companyId = Guid.NewGuid();
+
+        user.AssignToCompany(companyId);
+        user.RemoveFromCompany();
+
+        DateTime removedAt = user.UpdatedAtUtc;
+
+        Assert.Null(user.CompanyId);
+
+        user.RemoveFromCompany();
+
+        Assert.Null(user.CompanyId);
+        Assert.Equal(removedAt, user.UpdatedAtUtc);
     }
 
     [Fact]
