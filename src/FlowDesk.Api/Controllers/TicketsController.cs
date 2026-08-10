@@ -1,5 +1,6 @@
 using FlowDesk.Api.Authorization;
 using FlowDesk.Api.Contracts.Tickets;
+using FlowDesk.Application.Tickets.ChangeStatus;
 using FlowDesk.Application.Tickets.Create;
 using FlowDesk.Application.Tickets.GetById;
 using FlowDesk.Application.Tickets.List;
@@ -19,17 +20,20 @@ public sealed class TicketsController : ControllerBase
     private readonly GetTicketByIdHandler _getTicketByIdHandler;
     private readonly ListTicketsHandler _listTicketsHandler;
     private readonly UpdateTicketHandler _updateTicketHandler;
+    private readonly ChangeTicketStatusHandler _changeTicketStatusHandler;
 
     public TicketsController(
         CreateTicketHandler createTicketHandler,
         GetTicketByIdHandler getTicketByIdHandler,
         ListTicketsHandler listTicketsHandler,
-        UpdateTicketHandler updateTicketHandler)
+        UpdateTicketHandler updateTicketHandler,
+        ChangeTicketStatusHandler changeTicketStatusHandler)
     {
         _createTicketHandler = createTicketHandler;
         _getTicketByIdHandler = getTicketByIdHandler;
         _listTicketsHandler = listTicketsHandler;
         _updateTicketHandler = updateTicketHandler;
+        _changeTicketStatusHandler = changeTicketStatusHandler;
     }
 
     [HttpPost]
@@ -164,6 +168,39 @@ public sealed class TicketsController : ControllerBase
 
         UpdateTicketResult result =
             await _updateTicketHandler.HandleAsync(
+                command,
+                cancellationToken);
+
+        return Ok(result);
+    }
+
+    [HttpPatch("{id:guid}/status")]
+    [Authorize(Policy = AuthorizationPolicies.TicketStatusChange)]
+    [ProducesResponseType<ChangeTicketStatusResult>(
+    StatusCodes.Status200OK)]
+    [ProducesResponseType<ProblemDetails>(
+    StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(
+    StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(
+    StatusCodes.Status403Forbidden)]
+    [ProducesResponseType<ProblemDetails>(
+    StatusCodes.Status404NotFound)]
+    [ProducesResponseType<ProblemDetails>(
+    StatusCodes.Status409Conflict)]
+    [ProducesResponseType<ProblemDetails>(
+    StatusCodes.Status500InternalServerError)]
+    public async Task<ActionResult<ChangeTicketStatusResult>> ChangeStatus(
+    Guid id,
+    ChangeTicketStatusRequest request,
+    CancellationToken cancellationToken)
+    {
+        var command = new ChangeTicketStatusCommand(
+            id,
+            request.Status);
+
+        ChangeTicketStatusResult result =
+            await _changeTicketStatusHandler.HandleAsync(
                 command,
                 cancellationToken);
 

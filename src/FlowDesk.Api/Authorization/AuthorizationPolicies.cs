@@ -8,4 +8,5 @@ public static class AuthorizationPolicies
     public const string TicketCreate = "TicketCreate";
     public const string TicketRead = "TicketRead";
     public const string TicketUpdate = "TicketUpdate";
+    public const string TicketStatusChange = "TicketStatusChange";
 }
