@@ -53,10 +53,10 @@ Este documento acompanha o desenvolvimento incremental do FlowDesk. Uma sprint s
 
 ## Sprint 4 — Comentários
 
-- [ ] Modelar `Comment`.
-- [ ] Relacionar comentários aos chamados.
-- [ ] Criar comentário.
-- [ ] Consultar histórico do chamado.
+- [x] Modelar `Comment`.
+- [x] Relacionar comentários aos chamados.
+- [x] Criar comentário.
+- [x] Consultar histórico do chamado.
 
 ## Sprint 5 — Dashboard
 
