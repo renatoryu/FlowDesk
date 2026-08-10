@@ -3,6 +3,7 @@ using FlowDesk.Api.Contracts.Tickets;
 using FlowDesk.Application.Tickets.Create;
 using FlowDesk.Application.Tickets.GetById;
 using FlowDesk.Application.Tickets.List;
+using FlowDesk.Application.Tickets.Update;
 using FlowDesk.Domain.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -17,15 +18,18 @@ public sealed class TicketsController : ControllerBase
     private readonly CreateTicketHandler _createTicketHandler;
     private readonly GetTicketByIdHandler _getTicketByIdHandler;
     private readonly ListTicketsHandler _listTicketsHandler;
+    private readonly UpdateTicketHandler _updateTicketHandler;
 
     public TicketsController(
         CreateTicketHandler createTicketHandler,
         GetTicketByIdHandler getTicketByIdHandler,
-        ListTicketsHandler listTicketsHandler)
+        ListTicketsHandler listTicketsHandler,
+        UpdateTicketHandler updateTicketHandler)
     {
         _createTicketHandler = createTicketHandler;
         _getTicketByIdHandler = getTicketByIdHandler;
         _listTicketsHandler = listTicketsHandler;
+        _updateTicketHandler = updateTicketHandler;
     }
 
     [HttpPost]
@@ -129,4 +133,41 @@ public sealed class TicketsController : ControllerBase
 
         return Ok(result);
     }
+
+    [HttpPut("{id:guid}")]
+    [Authorize(Policy = AuthorizationPolicies.TicketUpdate)]
+    [ProducesResponseType<UpdateTicketResult>(
+    StatusCodes.Status200OK)]
+    [ProducesResponseType<ProblemDetails>(
+    StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(
+    StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(
+    StatusCodes.Status403Forbidden)]
+    [ProducesResponseType<ProblemDetails>(
+    StatusCodes.Status404NotFound)]
+    [ProducesResponseType<ProblemDetails>(
+    StatusCodes.Status409Conflict)]
+    [ProducesResponseType<ProblemDetails>(
+    StatusCodes.Status500InternalServerError)]
+    public async Task<ActionResult<UpdateTicketResult>> Update(
+    Guid id,
+    UpdateTicketRequest request,
+    CancellationToken cancellationToken)
+    {
+        var command = new UpdateTicketCommand(
+            id,
+            request.CategoryId,
+            request.Title,
+            request.Description,
+            request.Priority);
+
+        UpdateTicketResult result =
+            await _updateTicketHandler.HandleAsync(
+                command,
+                cancellationToken);
+
+        return Ok(result);
+    }
+
 }
