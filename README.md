@@ -12,13 +12,16 @@ O projeto está sendo desenvolvido com foco em aprendizado, boas práticas, port
 
 ✅ Sprint 3 concluída — gerenciamento completo de chamados, com categorias, paginação, filtros, atualização, status controlado, exclusão lógica e autorização por perfil.
 
-Próxima etapa: Sprint 4 — Comentários e histórico dos chamados.
+✅ Sprint 4 concluída — comentários imutáveis, histórico cronológico, persistência no SQL Server e autorização contextual por chamado e empresa.
 
-A solução possui atualmente 157 testes unitários aprovados.
+Próxima etapa: Sprint 5 — Dashboard e indicadores operacionais.
+
+A solução possui atualmente 191 testes unitários aprovados.
 
 - [Documentação técnica da Sprint 1](docs/SPRINT-1.md)
 - [Documentação técnica da Sprint 2](docs/SPRINT-2.md)
 - [Documentação técnica da Sprint 3](docs/SPRINT-3.md)
+- [Documentação técnica da Sprint 4](docs/SPRINT-4.md)
 
 ## Objetivos
 
@@ -156,10 +159,12 @@ Update-Database -Project FlowDesk.Infrastructure -StartupProject FlowDesk.Api
 | `PUT` | `/api/tickets/{id}` | Customer próprio, Agent ou Admin | Atualizar detalhes |
 | `PATCH` | `/api/tickets/{id}/status` | Customer com restrição, Agent ou Admin | Alterar status |
 | `DELETE` | `/api/tickets/{id}` | Customer próprio, Agent ou Admin | Excluir logicamente |
+| `POST` | `/api/tickets/{ticketId}/comments` | Customer próprio, Agent ou Admin | Registrar comentário em um chamado |
+| `GET` | `/api/tickets/{ticketId}/comments` | Customer próprio, Agent ou Admin | Consultar histórico cronológico |
 
 ### Testes
 
-Abra o Gerenciador de Testes do Visual Studio e execute todos os testes. O estado atual possui 157 testes unitários aprovados.
+Abra o Gerenciador de Testes do Visual Studio e execute todos os testes. O estado atual possui 191 testes unitários aprovados.
 
 ## Fluxo de desenvolvimento
 

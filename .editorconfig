@@ -31,3 +31,7 @@ trim_trailing_whitespace = false
 [{Makefile,Dockerfile}]
 indent_style = tab
 
+# EF Core generates migration array literals for one-time database operations.
+[src/FlowDesk.Infrastructure/Persistence/Migrations/*.cs]
+dotnet_diagnostic.CA1861.severity = none
+

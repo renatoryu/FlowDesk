@@ -440,6 +440,26 @@ public sealed class TicketTests
                 TicketPriority.High));
     }
 
+    [Fact]
+    public void EnsureCanReceiveCommentsOnClosedTicketThrowsDomainRuleException()
+    {
+        Ticket ticket = CreateClosedTicket();
+
+        Assert.Throws<DomainRuleException>(
+            () => ticket.EnsureCanReceiveComments());
+    }
+
+    [Fact]
+    public void EnsureCanReceiveCommentsOnDeletedTicketThrowsDomainRuleException()
+    {
+        Ticket ticket = CreateTicket();
+
+        ticket.Delete(Guid.NewGuid());
+
+        Assert.Throws<DomainRuleException>(
+            () => ticket.EnsureCanReceiveComments());
+    }
+
     private static Ticket CreateTicket(
         string title = "Cannot access the system",
         string description =

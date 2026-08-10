@@ -24,6 +24,8 @@ public sealed class FlowDeskDbContext : DbContext, IUnitOfWork
     public DbSet<Category> Categories => Set<Category>();
     public DbSet<Ticket> Tickets => Set<Ticket>();
 
+    public DbSet<Comment> Comments => Set<Comment>();
+
     public override async Task<int> SaveChangesAsync(
         CancellationToken cancellationToken = default)
     {
