@@ -2,6 +2,7 @@ using FlowDesk.Api.Authorization;
 using FlowDesk.Api.Contracts.Tickets;
 using FlowDesk.Application.Tickets.ChangeStatus;
 using FlowDesk.Application.Tickets.Create;
+using FlowDesk.Application.Tickets.Delete;
 using FlowDesk.Application.Tickets.GetById;
 using FlowDesk.Application.Tickets.List;
 using FlowDesk.Application.Tickets.Update;
@@ -21,19 +22,22 @@ public sealed class TicketsController : ControllerBase
     private readonly ListTicketsHandler _listTicketsHandler;
     private readonly UpdateTicketHandler _updateTicketHandler;
     private readonly ChangeTicketStatusHandler _changeTicketStatusHandler;
+    private readonly DeleteTicketHandler _deleteTicketHandler;
 
     public TicketsController(
         CreateTicketHandler createTicketHandler,
         GetTicketByIdHandler getTicketByIdHandler,
         ListTicketsHandler listTicketsHandler,
         UpdateTicketHandler updateTicketHandler,
-        ChangeTicketStatusHandler changeTicketStatusHandler)
+        ChangeTicketStatusHandler changeTicketStatusHandler,
+        DeleteTicketHandler deleteTicketHandler)
     {
         _createTicketHandler = createTicketHandler;
         _getTicketByIdHandler = getTicketByIdHandler;
         _listTicketsHandler = listTicketsHandler;
         _updateTicketHandler = updateTicketHandler;
         _changeTicketStatusHandler = changeTicketStatusHandler;
+        _deleteTicketHandler = deleteTicketHandler;
     }
 
     [HttpPost]
@@ -205,6 +209,32 @@ public sealed class TicketsController : ControllerBase
                 cancellationToken);
 
         return Ok(result);
+    }
+
+    [HttpDelete("{id:guid}")]
+    [Authorize(Policy = AuthorizationPolicies.TicketDelete)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType<ProblemDetails>(
+    StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(
+    StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(
+    StatusCodes.Status403Forbidden)]
+    [ProducesResponseType<ProblemDetails>(
+    StatusCodes.Status404NotFound)]
+    [ProducesResponseType<ProblemDetails>(
+    StatusCodes.Status409Conflict)]
+    [ProducesResponseType<ProblemDetails>(
+    StatusCodes.Status500InternalServerError)]
+    public async Task<IActionResult> Delete(
+    Guid id,
+    CancellationToken cancellationToken)
+    {
+        await _deleteTicketHandler.HandleAsync(
+            new DeleteTicketCommand(id),
+            cancellationToken);
+
+        return NoContent();
     }
 
 }

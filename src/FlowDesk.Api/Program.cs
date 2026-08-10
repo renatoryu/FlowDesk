@@ -14,6 +14,7 @@ using FlowDesk.Application.Companies.List;
 using FlowDesk.Application.Companies.Update;
 using FlowDesk.Application.Tickets.ChangeStatus;
 using FlowDesk.Application.Tickets.Create;
+using FlowDesk.Application.Tickets.Delete;
 using FlowDesk.Application.Tickets.GetById;
 using FlowDesk.Application.Tickets.List;
 using FlowDesk.Application.Tickets.Update;
@@ -73,10 +74,16 @@ builder.Services.AddAuthorization(options =>
             nameof(UserRole.Admin)));
     options.AddPolicy(
     AuthorizationPolicies.TicketStatusChange,
-    policy => policy.RequireRole(
-        nameof(UserRole.Customer),
-        nameof(UserRole.Agent),
-        nameof(UserRole.Admin)));
+        policy => policy.RequireRole(
+            nameof(UserRole.Customer),
+            nameof(UserRole.Agent),
+            nameof(UserRole.Admin)));
+    options.AddPolicy(
+        AuthorizationPolicies.TicketDelete,
+        policy => policy.RequireRole(
+            nameof(UserRole.Customer),
+            nameof(UserRole.Agent),
+            nameof(UserRole.Admin)));
 });
 
 builder.Services.AddScoped<
@@ -129,6 +136,10 @@ builder.Services.AddScoped<
     IValidator<ChangeTicketStatusCommand>,
     ChangeTicketStatusCommandValidator>();
 
+builder.Services.AddScoped<
+    IValidator<DeleteTicketCommand>,
+    DeleteTicketCommandValidator>();
+
 builder.Services.AddScoped<AssignUserCompanyHandler>();
 builder.Services.AddScoped<ListCategoriesHandler>();
 builder.Services.AddScoped<UpdateCompanyHandler>();
@@ -141,6 +152,7 @@ builder.Services.AddScoped<ListTicketsHandler>();
 builder.Services.AddScoped<GetTicketByIdHandler>();
 builder.Services.AddScoped<UpdateTicketHandler>();
 builder.Services.AddScoped<ChangeTicketStatusHandler>();
+builder.Services.AddScoped<DeleteTicketHandler>();
 
 builder.Services.AddProblemDetails();
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
