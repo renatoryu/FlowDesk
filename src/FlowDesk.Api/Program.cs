@@ -1,14 +1,18 @@
 using FlowDesk.Api.Authorization;
 using FlowDesk.Api.ErrorHandling;
 using FlowDesk.Api.OpenApi;
+using FlowDesk.Api.Security;
+using FlowDesk.Application.Abstractions.Security;
 using FlowDesk.Application.Authentication.Login;
 using FlowDesk.Application.Authentication.Refresh;
 using FlowDesk.Application.Authentication.Register;
+using FlowDesk.Application.Categories.List;
 using FlowDesk.Application.Companies.Create;
 using FlowDesk.Application.Companies.Deactivate;
 using FlowDesk.Application.Companies.GetById;
 using FlowDesk.Application.Companies.List;
 using FlowDesk.Application.Companies.Update;
+using FlowDesk.Application.Users.AssignCompany;
 using FlowDesk.Domain.Enums;
 using FlowDesk.Infrastructure;
 using FluentValidation;
@@ -19,6 +23,12 @@ using Microsoft.OpenApi;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddInfrastructure(builder.Configuration);
+
+builder.Services.AddHttpContextAccessor();
+
+builder.Services.AddScoped<
+    ICurrentUser,
+    HttpContextCurrentUser>();
 
 builder.Services.AddAuthorization(options =>
 {
@@ -32,6 +42,10 @@ builder.Services.AddAuthorization(options =>
         AuthorizationPolicies.CompanyWrite,
         policy => policy.RequireRole(
             nameof(UserRole.Admin)));
+    options.AddPolicy(
+    AuthorizationPolicies.UserCompanyWrite,
+    policy => policy.RequireRole(
+        nameof(UserRole.Admin)));
 });
 
 builder.Services.AddScoped<
@@ -60,6 +74,12 @@ builder.Services.AddScoped<
     IValidator<UpdateCompanyCommand>,
     UpdateCompanyCommandValidator>();
 
+builder.Services.AddScoped<
+    IValidator<AssignUserCompanyCommand>,
+    AssignUserCompanyCommandValidator>();
+
+builder.Services.AddScoped<AssignUserCompanyHandler>();
+builder.Services.AddScoped<ListCategoriesHandler>();
 builder.Services.AddScoped<UpdateCompanyHandler>();
 builder.Services.AddScoped<CreateCompanyHandler>();
 builder.Services.AddScoped<GetCompanyByIdHandler>();
