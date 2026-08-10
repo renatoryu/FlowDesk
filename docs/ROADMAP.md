@@ -40,16 +40,16 @@ Este documento acompanha o desenvolvimento incremental do FlowDesk. Uma sprint s
 
 ## Sprint 3 — Chamados
 
-- [ ] Modelar `Ticket`.
-- [ ] Modelar `Category`.
-- [ ] Modelar prioridades.
-- [ ] Modelar status.
-- [ ] Criar chamado.
-- [ ] Editar chamado.
-- [ ] Alterar status.
-- [ ] Excluir chamado.
-- [ ] Listar chamados.
-- [ ] Consultar chamado por identificador.
+- [x] Modelar `Ticket`.
+- [x] Modelar `Category`.
+- [x] Modelar prioridades.
+- [x] Modelar status.
+- [x] Criar chamado.
+- [x] Editar chamado.
+- [x] Alterar status.
+- [x] Excluir chamado.
+- [x] Listar chamados.
+- [x] Consultar chamado por identificador.
 
 ## Sprint 4 — Comentários
 

@@ -31,6 +31,14 @@ public static class DependencyInjection
             ICompanyRepository,
             CompanyRepository>();
 
+        services.AddScoped<
+            ICategoryRepository,
+            CategoryRepository>();
+
+        services.AddScoped<
+            ITicketRepository,
+            TicketRepository>();
+
         services.AddScoped<IUserRepository, UserRepository>();
 
         services.AddScoped<

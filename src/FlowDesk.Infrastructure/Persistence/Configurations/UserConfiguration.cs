@@ -41,6 +41,18 @@ public sealed class UserConfiguration : IEntityTypeConfiguration<User>
             .IsRequired();
 
         builder
+            .Property(user => user.CompanyId);
+
+        builder
+            .HasIndex(user => user.CompanyId);
+
+        builder
+            .HasOne<Company>()
+            .WithMany()
+            .HasForeignKey(user => user.CompanyId)
+            .OnDelete(DeleteBehavior.NoAction);
+
+        builder
             .Property(user => user.IsActive)
             .IsRequired();
 
