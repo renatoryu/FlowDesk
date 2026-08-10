@@ -6,4 +6,5 @@ public static class AuthorizationPolicies
     public const string CompanyWrite = "CompanyWrite";
     public const string UserCompanyWrite = "UserCompanyWrite";
     public const string TicketCreate = "TicketCreate";
+    public const string TicketRead = "TicketRead";
 }

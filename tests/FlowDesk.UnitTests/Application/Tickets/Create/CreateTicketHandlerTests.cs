@@ -1,6 +1,7 @@
 using FlowDesk.Application.Abstractions.Persistence;
 using FlowDesk.Application.Abstractions.Security;
 using FlowDesk.Application.Common.Exceptions;
+using FlowDesk.Application.Common.Models;
 using FlowDesk.Application.Tickets.Create;
 using FlowDesk.Domain.Entities;
 using FlowDesk.Domain.Enums;
@@ -625,6 +626,11 @@ public sealed class CreateTicketHandlerTests
             AddCallCount++;
 
             return Task.CompletedTask;
+        }
+
+        public Task<PagedResult<Ticket>> ListAsync(TicketListFilter filter, CancellationToken cancellationToken = default)
+        {
+            throw new NotImplementedException();
         }
     }
 

@@ -13,6 +13,7 @@ using FlowDesk.Application.Companies.GetById;
 using FlowDesk.Application.Companies.List;
 using FlowDesk.Application.Companies.Update;
 using FlowDesk.Application.Tickets.Create;
+using FlowDesk.Application.Tickets.List;
 using FlowDesk.Application.Users.AssignCompany;
 using FlowDesk.Domain.Enums;
 using FlowDesk.Infrastructure;
@@ -53,6 +54,13 @@ builder.Services.AddAuthorization(options =>
         AuthorizationPolicies.TicketCreate,
         policy => policy.RequireRole(
             nameof(UserRole.Customer)));
+
+    options.AddPolicy(
+    AuthorizationPolicies.TicketRead,
+    policy => policy.RequireRole(
+        nameof(UserRole.Customer),
+        nameof(UserRole.Agent),
+        nameof(UserRole.Admin)));
 });
 
 builder.Services.AddScoped<
@@ -89,6 +97,10 @@ builder.Services.AddScoped<
     IValidator<CreateTicketCommand>,
     CreateTicketCommandValidator>();
 
+builder.Services.AddScoped<
+    IValidator<ListTicketsQuery>,
+    ListTicketsQueryValidator>();
+
 builder.Services.AddScoped<AssignUserCompanyHandler>();
 builder.Services.AddScoped<ListCategoriesHandler>();
 builder.Services.AddScoped<UpdateCompanyHandler>();
@@ -97,6 +109,7 @@ builder.Services.AddScoped<GetCompanyByIdHandler>();
 builder.Services.AddScoped<ListCompaniesHandler>();
 builder.Services.AddScoped<DeactivateCompanyHandler>();
 builder.Services.AddScoped<CreateTicketHandler>();
+builder.Services.AddScoped<ListTicketsHandler>();
 
 builder.Services.AddProblemDetails();
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
