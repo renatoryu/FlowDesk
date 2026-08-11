@@ -12,4 +12,5 @@ public static class AuthorizationPolicies
     public const string TicketDelete = "TicketDelete";
     public const string CommentCreate = "CommentCreate";
     public const string CommentRead = "CommentRead";
+    public const string DashboardRead = "DashboardRead";
 }
