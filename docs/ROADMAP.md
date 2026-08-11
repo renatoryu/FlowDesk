@@ -60,9 +60,9 @@ Este documento acompanha o desenvolvimento incremental do FlowDesk. Uma sprint s
 
 ## Sprint 5 — Dashboard
 
-- [ ] Exibir quantidade de chamados abertos.
-- [ ] Exibir quantidade de chamados em andamento.
-- [ ] Exibir quantidade de chamados finalizados.
+- [x] Exibir quantidade de chamados abertos.
+- [x] Exibir quantidade de chamados em andamento.
+- [x] Exibir quantidade de chamados finalizados.
 
 ## Sprint 6 — Uploads
 

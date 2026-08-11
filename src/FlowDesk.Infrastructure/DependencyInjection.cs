@@ -40,6 +40,10 @@ public static class DependencyInjection
             TicketRepository>();
 
         services.AddScoped<
+            IDashboardRepository,
+            DashboardRepository>();
+
+        services.AddScoped<
             ICommentRepository,
             CommentRepository>();
 

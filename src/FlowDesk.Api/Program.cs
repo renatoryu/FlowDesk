@@ -14,6 +14,7 @@ using FlowDesk.Application.Companies.Deactivate;
 using FlowDesk.Application.Companies.GetById;
 using FlowDesk.Application.Companies.List;
 using FlowDesk.Application.Companies.Update;
+using FlowDesk.Application.Dashboards.Summary;
 using FlowDesk.Application.Tickets.ChangeStatus;
 using FlowDesk.Application.Tickets.Create;
 using FlowDesk.Application.Tickets.Delete;
@@ -99,6 +100,12 @@ builder.Services.AddAuthorization(options =>
             nameof(UserRole.Customer),
             nameof(UserRole.Agent),
             nameof(UserRole.Admin)));
+    options.AddPolicy(
+        AuthorizationPolicies.DashboardRead,
+        policy => policy.RequireRole(
+            nameof(UserRole.Customer),
+            nameof(UserRole.Agent),
+            nameof(UserRole.Admin)));
 });
 
 builder.Services.AddScoped<
@@ -178,6 +185,7 @@ builder.Services.AddScoped<ChangeTicketStatusHandler>();
 builder.Services.AddScoped<DeleteTicketHandler>();
 builder.Services.AddScoped<CreateCommentHandler>();
 builder.Services.AddScoped<ListTicketCommentsHandler>();
+builder.Services.AddScoped<GetDashboardSummaryHandler>();
 
 builder.Services.AddProblemDetails();
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
