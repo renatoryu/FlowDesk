@@ -3,6 +3,9 @@ using FlowDesk.Api.ErrorHandling;
 using FlowDesk.Api.OpenApi;
 using FlowDesk.Api.Security;
 using FlowDesk.Application.Abstractions.Security;
+using FlowDesk.Application.Attachments.Download;
+using FlowDesk.Application.Attachments.List;
+using FlowDesk.Application.Attachments.Upload;
 using FlowDesk.Application.Authentication.Login;
 using FlowDesk.Application.Authentication.Refresh;
 using FlowDesk.Application.Authentication.Register;
@@ -106,6 +109,18 @@ builder.Services.AddAuthorization(options =>
             nameof(UserRole.Customer),
             nameof(UserRole.Agent),
             nameof(UserRole.Admin)));
+    options.AddPolicy(
+        AuthorizationPolicies.AttachmentUpload,
+        policy => policy.RequireRole(
+            nameof(UserRole.Customer),
+            nameof(UserRole.Agent),
+            nameof(UserRole.Admin)));
+    options.AddPolicy(
+        AuthorizationPolicies.AttachmentRead,
+        policy => policy.RequireRole(
+            nameof(UserRole.Customer),
+            nameof(UserRole.Agent),
+            nameof(UserRole.Admin)));
 });
 
 builder.Services.AddScoped<
@@ -170,6 +185,18 @@ builder.Services.AddScoped<
     IValidator<ListTicketCommentsQuery>,
     ListTicketCommentsQueryValidator>();
 
+builder.Services.AddScoped<
+    IValidator<UploadAttachmentCommand>,
+    UploadAttachmentCommandValidator>();
+
+builder.Services.AddScoped<
+    IValidator<ListTicketAttachmentsQuery>,
+    ListTicketAttachmentsQueryValidator>();
+
+builder.Services.AddScoped<
+    IValidator<DownloadAttachmentQuery>,
+    DownloadAttachmentQueryValidator>();
+
 builder.Services.AddScoped<AssignUserCompanyHandler>();
 builder.Services.AddScoped<ListCategoriesHandler>();
 builder.Services.AddScoped<UpdateCompanyHandler>();
@@ -186,6 +213,9 @@ builder.Services.AddScoped<DeleteTicketHandler>();
 builder.Services.AddScoped<CreateCommentHandler>();
 builder.Services.AddScoped<ListTicketCommentsHandler>();
 builder.Services.AddScoped<GetDashboardSummaryHandler>();
+builder.Services.AddScoped<UploadAttachmentHandler>();
+builder.Services.AddScoped<ListTicketAttachmentsHandler>();
+builder.Services.AddScoped<DownloadAttachmentHandler>();
 
 builder.Services.AddProblemDetails();
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();

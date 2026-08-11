@@ -66,10 +66,10 @@ Este documento acompanha o desenvolvimento incremental do FlowDesk. Uma sprint s
 
 ## Sprint 6 — Uploads
 
-- [ ] Implementar upload de PDF.
-- [ ] Implementar upload de PNG.
-- [ ] Implementar upload de JPG.
-- [ ] Validar tipo e tamanho dos arquivos.
+- [x] Implementar upload de PDF.
+- [x] Implementar upload de PNG.
+- [x] Implementar upload de JPG.
+- [x] Validar tipo e tamanho dos arquivos.
 
 ## Sprint 7 — Testes
 

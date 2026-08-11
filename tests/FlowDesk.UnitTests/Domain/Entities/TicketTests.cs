@@ -460,6 +460,37 @@ public sealed class TicketTests
             () => ticket.EnsureCanReceiveComments());
     }
 
+    [Fact]
+    public void EnsureCanReceiveAttachmentsOnOpenTicketDoesNotThrow()
+    {
+        Ticket ticket = CreateTicket();
+
+        Exception? exception = Record.Exception(
+            () => ticket.EnsureCanReceiveAttachments());
+
+        Assert.Null(exception);
+    }
+
+    [Fact]
+    public void EnsureCanReceiveAttachmentsOnClosedTicketThrowsDomainRuleException()
+    {
+        Ticket ticket = CreateClosedTicket();
+
+        Assert.Throws<DomainRuleException>(
+            () => ticket.EnsureCanReceiveAttachments());
+    }
+
+    [Fact]
+    public void EnsureCanReceiveAttachmentsOnDeletedTicketThrowsDomainRuleException()
+    {
+        Ticket ticket = CreateTicket();
+
+        ticket.Delete(Guid.NewGuid());
+
+        Assert.Throws<DomainRuleException>(
+            () => ticket.EnsureCanReceiveAttachments());
+    }
+
     private static Ticket CreateTicket(
         string title = "Cannot access the system",
         string description =
