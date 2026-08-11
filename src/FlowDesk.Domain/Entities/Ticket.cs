@@ -188,6 +188,17 @@ public sealed class Ticket : BaseEntity
         }
     }
 
+    public void EnsureCanReceiveAttachments()
+    {
+        EnsureNotDeleted();
+
+        if (Status == TicketStatus.Closed)
+        {
+            throw new DomainRuleException(
+                "Closed tickets cannot receive attachments.");
+        }
+    }
+
     private static Guid ValidateRequiredId(
         Guid id,
         string parameterName)
