@@ -1,10 +1,12 @@
 using System.IdentityModel.Tokens.Jwt;
 using FlowDesk.Application.Abstractions.Persistence;
 using FlowDesk.Application.Abstractions.Security;
+using FlowDesk.Application.Abstractions.Storage;
 using FlowDesk.Infrastructure.Authentication;
 using FlowDesk.Infrastructure.Persistence;
 using FlowDesk.Infrastructure.Persistence.Repositories;
 using FlowDesk.Infrastructure.Security;
+using FlowDesk.Infrastructure.Storage;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -47,11 +49,26 @@ public static class DependencyInjection
             ICommentRepository,
             CommentRepository>();
 
+        services.AddScoped<
+            IAttachmentRepository,
+            AttachmentRepository>();
+
         services.AddScoped<IUserRepository, UserRepository>();
 
         services.AddScoped<
             IRefreshTokenRepository,
             RefreshTokenRepository>();
+
+        AttachmentStorageOptions attachmentStorageOptions = configuration
+            .GetSection(AttachmentStorageOptions.SectionName)
+            .Get<AttachmentStorageOptions>()
+        ?? new AttachmentStorageOptions();
+
+        services.AddSingleton(attachmentStorageOptions);
+
+        services.AddSingleton<
+            IAttachmentStorage,
+            LocalAttachmentStorage>();
 
         services.AddScoped<IUnitOfWork>(serviceProvider =>
             serviceProvider.GetRequiredService<FlowDeskDbContext>());

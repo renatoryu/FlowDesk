@@ -16,15 +16,18 @@ O projeto está sendo desenvolvido com foco em aprendizado, boas práticas, port
 
 ✅ Sprint 5 concluída — dashboard seguro com indicadores de chamados abertos, em andamento e finalizados, calculados conforme o escopo de acesso do usuário.
 
-Próxima etapa: Sprint 6 — Uploads e anexos de chamados.
+✅ Sprint 6 concluída — anexos seguros com upload, listagem, download, validação de conteúdo, persistência no SQL Server e armazenamento local.
 
-A solução possui atualmente 200 testes unitários aprovados.
+Próxima etapa: Sprint 7 — Testes automatizados e cobertura.
+
+A solução possui atualmente 244 testes unitários aprovados.
 
 - [Documentação técnica da Sprint 1](docs/SPRINT-1.md)
 - [Documentação técnica da Sprint 2](docs/SPRINT-2.md)
 - [Documentação técnica da Sprint 3](docs/SPRINT-3.md)
 - [Documentação técnica da Sprint 4](docs/SPRINT-4.md)
 - [Documentação técnica da Sprint 5](docs/SPRINT-5.md)
+- [Documentação técnica da Sprint 6](docs/SPRINT-6.md)
 
 ## Objetivos
 
@@ -165,10 +168,13 @@ Update-Database -Project FlowDesk.Infrastructure -StartupProject FlowDesk.Api
 | `POST` | `/api/tickets/{ticketId}/comments` | Customer próprio, Agent ou Admin | Registrar comentário em um chamado |
 | `GET` | `/api/tickets/{ticketId}/comments` | Customer próprio, Agent ou Admin | Consultar histórico cronológico |
 | `GET` | `/api/dashboard/summary` | Customer próprio, Agent ou Admin | Consultar indicadores operacionais |
+| `POST` | `/api/tickets/{ticketId}/attachments` | Customer próprio, Agent ou Admin | Enviar anexo |
+| `GET` | `/api/tickets/{ticketId}/attachments` | Customer próprio, Agent ou Admin | Listar anexos |
+| `GET` | `/api/tickets/{ticketId}/attachments/{attachmentId}/download` | Customer próprio, Agent ou Admin | Baixar anexo |
 
 ### Testes
 
-Abra o Gerenciador de Testes do Visual Studio e execute todos os testes. O estado atual possui 200 testes unitários aprovados.
+Abra o Gerenciador de Testes do Visual Studio e execute todos os testes. O estado atual possui 244 testes unitários aprovados.
 
 ## Fluxo de desenvolvimento
 
