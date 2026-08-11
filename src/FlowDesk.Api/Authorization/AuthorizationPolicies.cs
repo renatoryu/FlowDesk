@@ -13,4 +13,5 @@ public static class AuthorizationPolicies
     public const string CommentCreate = "CommentCreate";
     public const string CommentRead = "CommentRead";
     public const string DashboardRead = "DashboardRead";
+    public const string AttachmentUpload = "AttachmentUpload";
 }
