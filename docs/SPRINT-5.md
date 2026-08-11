@@ -86,6 +86,7 @@ Exemplo de resposta:
 ## Rastreabilidade
 
 - [Issue #17 — Sprint 5: dashboard e indicadores operacionais](https://github.com/renatoryu/FlowDesk/issues/17)
+- [Pull Request #18 — dashboard e indicadores para develop](https://github.com/renatoryu/FlowDesk/pull/18)
 
 ## Próximos aprimoramentos
 
