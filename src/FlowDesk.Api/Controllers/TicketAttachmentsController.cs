@@ -1,4 +1,6 @@
 using FlowDesk.Api.Authorization;
+using FlowDesk.Application.Attachments.Download;
+using FlowDesk.Application.Attachments.List;
 using FlowDesk.Application.Attachments.Upload;
 using FlowDesk.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
@@ -13,10 +15,19 @@ public sealed class TicketAttachmentsController : ControllerBase
 {
     private readonly UploadAttachmentHandler _uploadAttachmentHandler;
 
+    private readonly ListTicketAttachmentsHandler _listTicketAttachmentsHandler;
+
+    private readonly DownloadAttachmentHandler _downloadAttachmentHandler;
+
     public TicketAttachmentsController(
-        UploadAttachmentHandler uploadAttachmentHandler)
+        UploadAttachmentHandler uploadAttachmentHandler,
+        ListTicketAttachmentsHandler listTicketAttachmentsHandler,
+        DownloadAttachmentHandler downloadAttachmentHandler)
     {
         _uploadAttachmentHandler = uploadAttachmentHandler;
+        _listTicketAttachmentsHandler =
+            listTicketAttachmentsHandler;
+        _downloadAttachmentHandler = downloadAttachmentHandler;
     }
 
     [HttpPost]
@@ -58,8 +69,73 @@ public sealed class TicketAttachmentsController : ControllerBase
                     content),
                 cancellationToken);
 
-        return StatusCode(
-            StatusCodes.Status201Created,
+        return CreatedAtAction(
+            nameof(List),
+            new { ticketId },
             result);
     }
+
+    [HttpGet]
+    [Authorize(Policy = AuthorizationPolicies.AttachmentRead)]
+    [ProducesResponseType<ListTicketAttachmentsResult>(
+    StatusCodes.Status200OK)]
+    [ProducesResponseType<ProblemDetails>(
+    StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(
+    StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(
+    StatusCodes.Status403Forbidden)]
+    [ProducesResponseType<ProblemDetails>(
+    StatusCodes.Status404NotFound)]
+    [ProducesResponseType<ProblemDetails>(
+    StatusCodes.Status409Conflict)]
+    [ProducesResponseType<ProblemDetails>(
+    StatusCodes.Status500InternalServerError)]
+    public async Task<ActionResult<ListTicketAttachmentsResult>> List(
+    Guid ticketId,
+    CancellationToken cancellationToken)
+    {
+        ListTicketAttachmentsResult result =
+            await _listTicketAttachmentsHandler.HandleAsync(
+                new ListTicketAttachmentsQuery(ticketId),
+                cancellationToken);
+
+        return Ok(result);
+    }
+
+    [HttpGet("{attachmentId:guid}/download")]
+    [Authorize(Policy = AuthorizationPolicies.AttachmentRead)]
+    [ProducesResponseType(
+    StatusCodes.Status200OK)]
+    [ProducesResponseType<ProblemDetails>(
+    StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(
+    StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(
+    StatusCodes.Status403Forbidden)]
+    [ProducesResponseType<ProblemDetails>(
+    StatusCodes.Status404NotFound)]
+    [ProducesResponseType<ProblemDetails>(
+    StatusCodes.Status409Conflict)]
+    [ProducesResponseType<ProblemDetails>(
+    StatusCodes.Status500InternalServerError)]
+    public async Task<IActionResult> Download(
+    Guid ticketId,
+    Guid attachmentId,
+    CancellationToken cancellationToken)
+    {
+        DownloadAttachmentResult result =
+            await _downloadAttachmentHandler.HandleAsync(
+                new DownloadAttachmentQuery(
+                    ticketId,
+                    attachmentId),
+                cancellationToken);
+
+        return File(
+            result.Content,
+            result.ContentType,
+            result.FileName,
+            enableRangeProcessing: true);
+    }
+
 }
