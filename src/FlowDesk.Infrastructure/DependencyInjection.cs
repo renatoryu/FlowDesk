@@ -27,7 +27,13 @@ public static class DependencyInjection
                 "Connection string 'DefaultConnection' was not found.");
 
         services.AddDbContext<FlowDeskDbContext>(
-            options => options.UseSqlServer(connectionString));
+            options => options.UseSqlServer(
+                connectionString,
+                sqlServerOptions =>
+                    sqlServerOptions.EnableRetryOnFailure(
+                        maxRetryCount: 5,
+                        maxRetryDelay: TimeSpan.FromSeconds(5),
+                        errorNumbersToAdd: null)));
 
         services.AddScoped<
             ICompanyRepository,
