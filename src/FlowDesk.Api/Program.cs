@@ -27,6 +27,7 @@ using FlowDesk.Application.Tickets.Update;
 using FlowDesk.Application.Users.AssignCompany;
 using FlowDesk.Domain.Enums;
 using FlowDesk.Infrastructure;
+using FlowDesk.Infrastructure.Persistence;
 using FluentValidation;
 using Microsoft.OpenApi;
 
@@ -258,6 +259,15 @@ builder.Services.AddSwaggerGen(options =>
 });
 
 var app = builder.Build();
+
+bool applyMigrations =
+    app.Configuration.GetValue<bool>(
+        "Database:ApplyMigrations");
+
+if (applyMigrations)
+{
+    await app.Services.ApplyDatabaseMigrationsAsync();
+}
 
 if (app.Environment.IsDevelopment())
 {

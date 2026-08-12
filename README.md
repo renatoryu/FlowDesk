@@ -22,7 +22,9 @@ O projeto está sendo desenvolvido com foco em aprendizado, boas práticas, port
 
 ✅ Sprint 7 concluída — testes automatizados, cobertura mensurável e pipeline de integração contínua com GitHub Actions.
 
-Próxima etapa: Sprint 8 — Docker e execução em contêineres.
+✅ Sprint 8 concluída — API e SQL Server containerizados com Docker Compose, health checks, volumes persistentes, migrations automáticas e validação no GitHub Actions.
+
+Próxima etapa: Sprint 9 — front-end com React e TypeScript.
 
 A solução possui atualmente 244 testes unitários aprovados.
 
@@ -33,6 +35,7 @@ A solução possui atualmente 244 testes unitários aprovados.
 - [Documentação técnica da Sprint 5](docs/SPRINT-5.md)
 - [Documentação técnica da Sprint 6](docs/SPRINT-6.md)
 - [Documentação técnica da Sprint 7](docs/SPRINT-7.md)
+- [Documentação técnica da Sprint 8](docs/SPRINT-8.md)
 
 ## Objetivos
 

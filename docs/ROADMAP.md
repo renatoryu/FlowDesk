@@ -80,10 +80,10 @@ Este documento acompanha o desenvolvimento incremental do FlowDesk. Uma sprint s
 
 ## Sprint 8 — Docker
 
-- [ ] Criar o Dockerfile da API.
-- [ ] Criar o Docker Compose.
-- [ ] Configurar o SQL Server no Docker.
-- [ ] Executar a solução em contêineres.
+- [x] Criar o Dockerfile da API.
+- [x] Criar o Docker Compose.
+- [x] Configurar o SQL Server no Docker.
+- [x] Executar a solução em contêineres.
 
 ## Sprint 9 — Front-end
 
@@ -109,7 +109,7 @@ Este documento acompanha o desenvolvimento incremental do FlowDesk. Uma sprint s
 - [ ] Arquitetura organizada.
 - [ ] Documentação completa.
 - [ ] Testes automatizados.
-- [ ] Docker configurado.
+- [x] Docker configurado.
 - [ ] Deploy em produção.
 - [ ] README profissional.
 - [ ] Histórico consistente de commits.

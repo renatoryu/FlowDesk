@@ -1,0 +1,89 @@
+name: flowdesk
+
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: flowdesk-sqlserver
+    hostname: flowdesk-sqlserver
+
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_PID: "Developer"
+      MSSQL_SA_PASSWORD: ${MSSQL_SA_PASSWORD:?Define MSSQL_SA_PASSWORD in .env}
+
+    ports:
+      - "${SQLSERVER_PORT:-14330}:1433"
+
+    volumes:
+      - sqlserver-data:/var/opt/mssql
+
+    networks:
+      - flowdesk-network
+
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - >-
+          /opt/mssql-tools18/bin/sqlcmd
+          -S localhost
+          -U sa
+          -P "$$MSSQL_SA_PASSWORD"
+          -C
+          -Q "SELECT 1"
+          -b
+          -o /dev/null
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+
+    restart: unless-stopped
+
+  api:
+    image: flowdesk-api:dev
+
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    container_name: flowdesk-api
+
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_HTTP_PORTS: "8080"
+
+      ConnectionStrings__DefaultConnection: >-
+        Server=sqlserver,1433;
+        Database=FlowDeskDb;
+        User Id=sa;
+        Password=${MSSQL_SA_PASSWORD};
+        Encrypt=True;
+        TrustServerCertificate=True;
+        MultipleActiveResultSets=true
+
+      Jwt__SigningKey: ${JWT_SIGNING_KEY:?Define JWT_SIGNING_KEY in .env}
+      AttachmentStorage__RootPath: /app/uploads/attachments
+      Database__ApplyMigrations: "true"
+
+    ports:
+      - "${API_PORT:-8080}:8080"
+
+    volumes:
+      - attachments:/app/uploads
+
+    networks:
+      - flowdesk-network
+
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+
+    restart: unless-stopped
+
+volumes:
+  sqlserver-data:
+  attachments:
+
+networks:
+  flowdesk-network:
+    driver: bridge
