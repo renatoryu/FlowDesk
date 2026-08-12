@@ -1,0 +1,104 @@
+name: Continuous Integration
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+  pull_request:
+    branches:
+      - main
+      - develop
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  quality:
+    name: Build, tests and coverage
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    env:
+      CI: true
+      DOTNET_NOLOGO: true
+      DOTNET_CLI_TELEMETRY_OPTOUT: true
+      DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: global.json
+
+      - name: Restore dependencies
+        run: dotnet restore FlowDesk.slnx
+
+      - name: Restore local tools
+        run: dotnet tool restore
+
+      - name: Verify formatting
+        run: >
+          dotnet format FlowDesk.slnx
+          --no-restore
+          --verify-no-changes
+
+      - name: Build solution
+        run: >
+          dotnet build FlowDesk.slnx
+          --configuration Release
+          --no-restore
+          --warnaserror
+
+      - name: Run tests with coverage
+        run: >
+          dotnet test FlowDesk.slnx
+          --configuration Release
+          --no-build
+          --no-restore
+          --settings coverage.runsettings
+          --collect:"XPlat Code Coverage"
+          --results-directory TestResults
+          --logger "trx;LogFileName=test-results.trx"
+
+      - name: Generate coverage report
+        run: |
+          dotnet tool run reportgenerator \
+            "-reports:TestResults/**/coverage.cobertura.xml" \
+            "-targetdir:artifacts/coverage-report" \
+            "-reporttypes:Html;Cobertura;TextSummary"
+
+      - name: Add coverage to job summary
+        run: |
+          echo "## Code coverage" >> "$GITHUB_STEP_SUMMARY"
+          echo '```text' >> "$GITHUB_STEP_SUMMARY"
+          cat artifacts/coverage-report/Summary.txt >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: TestResults/**/*.trx
+          if-no-files-found: warn
+          retention-days: 14
+
+      - name: Upload coverage report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: |
+            TestResults/**/coverage.cobertura.xml
+            artifacts/coverage-report/**
+          if-no-files-found: warn
+          retention-days: 14

@@ -1,5 +1,7 @@
 # FlowDesk
 
+[![Continuous Integration](https://github.com/renatoryu/FlowDesk/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/renatoryu/FlowDesk/actions/workflows/ci.yml)
+
 O FlowDesk é uma plataforma de gerenciamento de chamados criada para simular um produto de Help Desk utilizado por empresas.
 
 O projeto está sendo desenvolvido com foco em aprendizado, boas práticas, portfólio e preparação profissional para oportunidades na área .NET.
@@ -18,7 +20,9 @@ O projeto está sendo desenvolvido com foco em aprendizado, boas práticas, port
 
 ✅ Sprint 6 concluída — anexos seguros com upload, listagem, download, validação de conteúdo, persistência no SQL Server e armazenamento local.
 
-Próxima etapa: Sprint 7 — Testes automatizados e cobertura.
+✅ Sprint 7 concluída — testes automatizados, cobertura mensurável e pipeline de integração contínua com GitHub Actions.
+
+Próxima etapa: Sprint 8 — Docker e execução em contêineres.
 
 A solução possui atualmente 244 testes unitários aprovados.
 
@@ -28,6 +32,7 @@ A solução possui atualmente 244 testes unitários aprovados.
 - [Documentação técnica da Sprint 4](docs/SPRINT-4.md)
 - [Documentação técnica da Sprint 5](docs/SPRINT-5.md)
 - [Documentação técnica da Sprint 6](docs/SPRINT-6.md)
+- [Documentação técnica da Sprint 7](docs/SPRINT-7.md)
 
 ## Objetivos
 
@@ -172,9 +177,34 @@ Update-Database -Project FlowDesk.Infrastructure -StartupProject FlowDesk.Api
 | `GET` | `/api/tickets/{ticketId}/attachments` | Customer próprio, Agent ou Admin | Listar anexos |
 | `GET` | `/api/tickets/{ticketId}/attachments/{attachmentId}/download` | Customer próprio, Agent ou Admin | Baixar anexo |
 
-### Testes
+### Testes e cobertura
 
-Abra o Gerenciador de Testes do Visual Studio e execute todos os testes. O estado atual possui 244 testes unitários aprovados.
+A solução possui atualmente 244 testes unitários aprovados.
+
+Executar os testes:
+
+```powershell
+dotnet test FlowDesk.slnx --no-restore
+```
+
+Gerar a cobertura:
+
+```powershell
+dotnet test FlowDesk.slnx `
+  --no-restore `
+  --settings coverage.runsettings `
+  --collect:"XPlat Code Coverage" `
+  --results-directory TestResults
+```
+
+A cobertura oficial das camadas Domain e Application é:
+
+- linhas: 84,18%;
+- branches: 78,13%;
+- Domain: 90,80% das linhas;
+- Application: 81,46% das linhas.
+
+Build, formatação, testes e cobertura também são executados automaticamente pelo GitHub Actions.
 
 ## Fluxo de desenvolvimento
 

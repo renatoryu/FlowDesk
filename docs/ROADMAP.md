@@ -73,10 +73,10 @@ Este documento acompanha o desenvolvimento incremental do FlowDesk. Uma sprint s
 
 ## Sprint 7 — Testes
 
-- [ ] Criar testes das regras de negócio.
-- [ ] Criar testes dos serviços.
-- [ ] Executar testes automaticamente.
-- [ ] Gerar relatório de cobertura.
+- [x] Criar testes das regras de negócio.
+- [x] Criar testes dos serviços.
+- [x] Executar testes automaticamente.
+- [x] Gerar relatório de cobertura.
 
 ## Sprint 8 — Docker
 
