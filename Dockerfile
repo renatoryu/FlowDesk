@@ -46,6 +46,10 @@ ENV ASPNETCORE_HTTP_PORTS=8080 \
 
 EXPOSE 8080
 
+RUN apt-get update \
+    && apt-get install --yes --no-install-recommends curl \
+    && rm -rf /var/lib/apt/lists/*
+
 COPY --from=build \
     --chown=app:app \
     /app/publish ./
@@ -54,5 +58,12 @@ RUN mkdir -p /app/uploads/attachments \
     && chown -R app:app /app/uploads
 
 USER app
+
+HEALTHCHECK \
+    --interval=10s \
+    --timeout=5s \
+    --start-period=10s \
+    --retries=5 \
+    CMD curl --fail --silent http://127.0.0.1:8080/ > /dev/null || exit 1
 
 ENTRYPOINT ["dotnet", "FlowDesk.Api.dll"]
