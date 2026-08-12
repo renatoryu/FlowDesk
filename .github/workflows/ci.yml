@@ -102,3 +102,30 @@ jobs:
             artifacts/coverage-report/**
           if-no-files-found: warn
           retention-days: 14
+
+  container:
+    name: Docker image and Compose
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    env:
+      MSSQL_SA_PASSWORD: FlowDesk_CI!2026_Strong
+      JWT_SIGNING_KEY: Rmxvd0Rlc2stQ0ktT25seS1Ob24tUHJvZHVjdGlvbi1LZXktMzItQnl0ZXM=
+      API_PORT: 8080
+      SQLSERVER_PORT: 14330
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Validate Compose configuration
+        run: docker compose config --quiet
+
+      - name: Build API container image
+        run: docker compose build api
+
+      - name: Verify hardened runtime image
+        shell: bash
+        run: |
+          test "$(docker image inspect flowdesk-api:dev --format '{{.Config.User}}')" = "app"
+          test -z "$(docker run --rm --entrypoint dotnet flowdesk-api:dev --list-sdks)"
