@@ -1,0 +1,239 @@
+.content {
+  width: min(100%, 58rem);
+  margin: 0 auto;
+  padding: clamp(1.5rem, 4vw, 3.5rem);
+}
+
+.back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: #64748b;
+  font-size: 0.76rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+  .back:hover {
+    color: #0284c7;
+  }
+
+  .back svg {
+    width: 1rem;
+  }
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.icon {
+  display: grid;
+  width: 3.6rem;
+  height: 3.6rem;
+  flex: 0 0 auto;
+  place-items: center;
+  color: #0369a1;
+  background: #e0f2fe;
+  border: 1px solid #bae6fd;
+  border-radius: 1rem;
+}
+
+  .icon svg {
+    width: 1.5rem;
+  }
+
+.header div > span {
+  color: #0284c7;
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.header h1 {
+  margin: 0.3rem 0 0;
+  color: #0f172a;
+  font-size: clamp(2rem, 4vw, 3rem);
+  letter-spacing: -0.05em;
+}
+
+.header p {
+  margin: 0.45rem 0 0;
+  color: #64748b;
+}
+
+.form {
+  display: grid;
+  gap: 1.25rem;
+  margin-top: 2rem;
+  padding: clamp(1.5rem, 4vw, 2.25rem);
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 1.25rem;
+  box-shadow: 0 1rem 2.5rem rgb(15 23 42 / 5%);
+}
+
+  .form label {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    color: #334155;
+    font-size: 0.78rem;
+    font-weight: 750;
+  }
+
+  .form input,
+  .form select,
+  .form textarea {
+    width: 100%;
+    padding: 0.8rem 0.9rem;
+    color: #0f172a;
+    background: #f8fafc;
+    border: 1px solid #cbd5e1;
+    border-radius: 0.75rem;
+    outline: none;
+    font: inherit;
+    font-weight: 500;
+    transition: border-color 160ms ease, box-shadow 160ms ease, background 160ms ease;
+  }
+
+  .form input,
+  .form select {
+    min-height: 3rem;
+  }
+
+  .form textarea {
+    min-height: 11rem;
+    resize: vertical;
+    line-height: 1.6;
+  }
+
+    .form input:focus,
+    .form select:focus,
+    .form textarea:focus {
+      background: #fff;
+      border-color: #38bdf8;
+      box-shadow: 0 0 0 3px rgb(56 189 248 / 15%);
+    }
+
+    .form input[aria-invalid='true'],
+    .form select[aria-invalid='true'],
+    .form textarea[aria-invalid='true'] {
+      border-color: #f87171;
+    }
+
+    .form input::placeholder,
+    .form textarea::placeholder {
+      color: #94a3b8;
+    }
+
+  .form select:disabled {
+    cursor: wait;
+    opacity: 0.65;
+  }
+
+.fieldFooter {
+  display: flex;
+  min-height: 1rem;
+  justify-content: space-between;
+  gap: 1rem;
+  color: #94a3b8;
+  font-size: 0.67rem;
+  font-weight: 600;
+}
+
+.error {
+  color: #dc2626;
+}
+
+.apiError {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.8rem 0.9rem;
+  color: #991b1b;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 0.75rem;
+  font-size: 0.76rem;
+  font-weight: 650;
+}
+
+  .apiError svg {
+    width: 1.1rem;
+    flex: 0 0 auto;
+  }
+
+.actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid #e2e8f0;
+}
+
+  .actions a,
+  .actions button {
+    display: inline-flex;
+    min-height: 2.8rem;
+    align-items: center;
+    justify-content: center;
+    padding: 0 1rem;
+    border-radius: 0.7rem;
+    font-size: 0.76rem;
+    font-weight: 800;
+    text-decoration: none;
+  }
+
+  .actions a {
+    color: #475569;
+    background: #f1f5f9;
+  }
+
+  .actions button {
+    gap: 0.5rem;
+    color: #fff;
+    background: linear-gradient(135deg, #0284c7, #0891b2);
+    border: 0;
+    box-shadow: 0 0.6rem 1.2rem rgb(2 132 199 / 20%);
+  }
+
+    .actions button:disabled {
+      cursor: wait;
+      opacity: 0.65;
+    }
+
+  .actions svg {
+    width: 1rem;
+  }
+
+.spinning {
+  animation: spin 0.9s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 600px) {
+  .header {
+    align-items: flex-start;
+  }
+
+  .actions {
+    align-items: stretch;
+    flex-direction: column-reverse;
+  }
+
+    .actions a,
+    .actions button {
+      width: 100%;
+    }
+}

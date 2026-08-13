@@ -6,6 +6,8 @@ import {
   Inbox,
   RefreshCw,
   TicketCheck,
+  Plus,
+  CircleCheck
 } from 'lucide-react'
 import { useState } from 'react'
 import { useAuth } from '../../auth/context/useAuth'
@@ -15,6 +17,10 @@ import type {
   TicketStatus,
 } from '../types/ticketTypes'
 import styles from './TicketsPage.module.css'
+import {
+  Link,
+  useLocation,
+} from 'react-router'
 
 const statusLabels: Record<TicketStatus, string> = {
   1: 'Aberto',
@@ -35,11 +41,22 @@ const dateFormatter = new Intl.DateTimeFormat(
   {
     dateStyle: 'short',
     timeStyle: 'short',
+    timeZone: 'America/Sao_Paulo',
   },
 )
 
+interface TicketsLocationState {
+  createdTicketTitle?: string
+}
+
 function TicketsPage() {
   const { session } = useAuth()
+
+  const location = useLocation()
+
+  const locationState =
+    location.state as TicketsLocationState | null
+
   const [page, setPage] = useState(1)
   const [status, setStatus] =
     useState<TicketStatus | ''>('')
@@ -87,13 +104,36 @@ function TicketsPage() {
           </p>
         </div>
 
-        <span className={styles.total}>
-          <TicketCheck aria-hidden="true" />
-          {ticketsQuery.data?.totalCount ?? 0}
-          {' '}
-          chamado(s)
-        </span>
+        <div className={styles.headerActions}>
+          {session.user.role === 'Customer' && (
+            <Link
+              className={styles.newTicket}
+              to="/tickets/new"
+            >
+              <Plus aria-hidden="true" />
+              Novo chamado
+            </Link>
+          )}
+
+          <span className={styles.total}>
+            <TicketCheck aria-hidden="true" />
+            {ticketsQuery.data?.totalCount ?? 0}
+            {' '}
+            chamado(s)
+          </span>
+        </div>
       </header>
+
+      {locationState?.createdTicketTitle && (
+        <div className={styles.success} role="status">
+          <CircleCheck aria-hidden="true" />
+
+          <div>
+            <strong>Chamado aberto com sucesso.</strong>
+            <span>{locationState.createdTicketTitle}</span>
+          </div>
+        </div>
+      )}
 
       <section className={styles.filters}>
         <label>

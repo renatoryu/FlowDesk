@@ -29,3 +29,23 @@ export interface ListTicketsParams {
   priority?: TicketPriority
   categoryId?: string
 }
+
+export interface CreateTicketRequest {
+  categoryId: string
+  title: string
+  description: string
+  priority: TicketPriority
+}
+
+export interface CreateTicketResponse {
+  id: string
+  companyId: string
+  categoryId: string
+  requesterId: string
+  title: string
+  description: string
+  priority: TicketPriority
+  status: TicketStatus
+  createdAtUtc: string
+  statusChangedAtUtc: string
+}
