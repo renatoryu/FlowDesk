@@ -178,6 +178,30 @@
     width: 1rem;
   }
 
+.queryError {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 2rem;
+  padding: 0.9rem 1rem;
+  color: #991b1b;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 0.85rem;
+  font-size: 0.82rem;
+  font-weight: 650;
+}
+
+  .queryError button {
+    padding: 0.45rem 0.7rem;
+    color: #fff;
+    background: #dc2626;
+    border: 0;
+    border-radius: 0.55rem;
+    font-weight: 700;
+  }
+
 .cards {
   display: grid;
   grid-template-columns: repeat(3, 1fr);

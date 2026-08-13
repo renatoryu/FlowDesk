@@ -65,3 +65,21 @@ export async function apiRequest<T>(
 
   return payload as T
 }
+
+export function authenticatedApiRequest<T>(
+  path: string,
+  accessToken: string,
+  options: RequestInit = {},
+): Promise<T> {
+  const headers = new Headers(options.headers)
+
+  headers.set(
+    'Authorization',
+    `Bearer ${accessToken}`,
+  )
+
+  return apiRequest<T>(path, {
+    ...options,
+    headers,
+  })
+}

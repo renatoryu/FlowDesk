@@ -1,3 +1,5 @@
+import { useQuery } from '@tanstack/react-query'
+import { getDashboardSummary } from '../services/dashboardApi'
 import {
   BarChart3,
   Building2,
@@ -19,6 +21,34 @@ const roleLabels: Record<UserRole, string> = {
 
 function DashboardPage() {
   const { session, signOut } = useAuth()
+
+  const accessToken = session?.accessToken ?? ''
+
+  const summaryQuery = useQuery({
+    queryKey: [
+      'dashboard',
+      'summary',
+      session?.user.id,
+    ],
+    queryFn: () =>
+      getDashboardSummary(accessToken),
+    enabled: accessToken.length > 0,
+    staleTime: 30_000,
+    retry: 1,
+  })
+
+  const formatMetric = (value?: number) => {
+    if (summaryQuery.isPending) {
+      return '...'
+    }
+
+    if (summaryQuery.isError) {
+      return '—'
+    }
+
+    return value ?? 0
+  }
+
 
   if (!session) {
     return null
@@ -100,6 +130,21 @@ function DashboardPage() {
           </span>
         </header>
 
+        {summaryQuery.isError && (
+          <div className={styles.queryError} role="alert">
+            <span>
+              Não foi possível carregar os indicadores.
+            </span>
+
+            <button
+              type="button"
+              onClick={() => summaryQuery.refetch()}
+            >
+              Tentar novamente
+            </button>
+          </div>
+        )}
+
         <section className={styles.cards}>
           <article>
             <span className={styles.openIcon}>
@@ -107,8 +152,12 @@ function DashboardPage() {
             </span>
             <div>
               <small>Chamados abertos</small>
-              <strong>—</strong>
-              <p>Aguardando integração</p>
+              <strong>
+                {formatMetric(
+                  summaryQuery.data?.openTickets,
+                )}
+              </strong>
+              <p>Aguardando atendimento</p>
             </div>
           </article>
 
@@ -118,8 +167,12 @@ function DashboardPage() {
             </span>
             <div>
               <small>Em andamento</small>
-              <strong>—</strong>
-              <p>Aguardando integração</p>
+              <strong>
+                {formatMetric(
+                  summaryQuery.data?.inProgressTickets,
+                )}
+              </strong>
+              <p>Em atendimento pela equipe</p>
             </div>
           </article>
 
@@ -129,19 +182,23 @@ function DashboardPage() {
             </span>
             <div>
               <small>Finalizados</small>
-              <strong>—</strong>
-              <p>Aguardando integração</p>
+              <strong>
+                {formatMetric(
+                  summaryQuery.data?.completedTickets,
+                )}
+              </strong>
+              <p>Resolvidos ou encerrados</p>
             </div>
           </article>
         </section>
 
         <section className={styles.welcome}>
           <div>
-            <span>Próximo passo</span>
-            <h2>Seu espaço de trabalho está pronto.</h2>
+            <span>Dados em tempo real</span>
+            <h2>Visão operacional atualizada.</h2>
             <p>
-              No próximo bloco, os indicadores serão
-              carregados diretamente da API do FlowDesk.
+              Os indicadores são carregados diretamente da API
+              e respeitam o perfil do usuário conectado.
             </p>
           </div>
 
