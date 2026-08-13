@@ -1,3 +1,11 @@
+import { useMutation } from '@tanstack/react-query'
+import { useNavigate } from 'react-router'
+import { ApiError } from '../../../shared/api/apiClient'
+import { useAuth } from '../context/useAuth'
+import { login } from '../services/authApi'
+import {
+  createAuthSession,
+} from '../services/authSession'
 import { zodResolver } from '@hookform/resolvers/zod'
 import {
   ArrowRight,
@@ -9,7 +17,6 @@ import {
   ShieldCheck,
   Sparkles,
 } from 'lucide-react'
-import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import styles from './LoginPage.module.css'
@@ -29,7 +36,28 @@ const loginSchema = z.object({
 type LoginFormValues = z.infer<typeof loginSchema>
 
 function LoginPage() {
-  const [feedback, setFeedback] = useState<string | null>(null)
+
+  const navigate = useNavigate()
+  const { authenticate } = useAuth()
+
+  const loginMutation = useMutation({
+    mutationFn: login,
+    onSuccess: (response) => {
+      const session = createAuthSession(response)
+
+      authenticate(session)
+      navigate('/dashboard', { replace: true })
+    },
+  })
+
+  const loginError =
+    loginMutation.error instanceof ApiError
+      ? loginMutation.error.status === 401
+        ? 'E-mail ou senha inválidos.'
+        : loginMutation.error.message
+      : loginMutation.error
+        ? 'Não foi possível conectar ao FlowDesk.'
+        : null
 
   const {
     register,
@@ -44,10 +72,10 @@ function LoginPage() {
     },
   })
 
-  function handleValidSubmit() {
-    setFeedback(
-      'Formulário validado. A autenticação será conectada à API no próximo bloco.',
-    )
+  function handleValidSubmit(
+    values: LoginFormValues,
+  ) {
+    loginMutation.mutate(values)
   }
 
   return (
@@ -216,16 +244,26 @@ function LoginPage() {
               )}
             </div>
 
-            <button className={styles.submitButton} type="submit">
-              Entrar no FlowDesk
-              <ArrowRight size={19} aria-hidden="true" />
+            <button
+              className={styles.submitButton}
+              type="submit"
+              disabled={loginMutation.isPending}
+            >
+              {loginMutation.isPending
+                ? 'Entrando...'
+                : 'Entrar no FlowDesk'}
+
+              {!loginMutation.isPending && (
+                <ArrowRight size={19} aria-hidden="true" />
+              )}
             </button>
 
-            {feedback && (
-              <p className={styles.feedback} role="status">
-                {feedback}
+            {loginError && (
+              <p className={styles.apiError} role="alert">
+                {loginError}
               </p>
             )}
+
           </form>
 
           <div className={styles.formFooter}>
