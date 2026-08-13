@@ -2,6 +2,7 @@ using FlowDesk.Api.Authorization;
 using FlowDesk.Api.ErrorHandling;
 using FlowDesk.Api.OpenApi;
 using FlowDesk.Api.Security;
+using FlowDesk.Api.Serialization;
 using FlowDesk.Application.Abstractions.Security;
 using FlowDesk.Application.Attachments.Download;
 using FlowDesk.Application.Attachments.List;
@@ -220,7 +221,13 @@ builder.Services.AddScoped<DownloadAttachmentHandler>();
 
 builder.Services.AddProblemDetails();
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
-builder.Services.AddControllers();
+builder.Services
+    .AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.Converters.Add(
+            new UtcDateTimeJsonConverter());
+    });
 
 builder.Services.AddEndpointsApiExplorer();
 
