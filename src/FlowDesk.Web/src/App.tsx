@@ -13,6 +13,8 @@ import { useAuth } from './features/auth/context/useAuth'
 import LoginPage from './features/auth/pages/LoginPage'
 import DashboardPage from './features/dashboard/pages/DashboardPage'
 import ProtectedRoute from './shared/routes/ProtectedRoute'
+import AppLayout from './shared/layout/AppLayout'
+import TicketsPage from './features/tickets/pages/TicketsPage'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -41,10 +43,17 @@ function ApplicationRoutes() {
       />
 
       <Route element={<ProtectedRoute />}>
-        <Route
-          path="/dashboard"
-          element={<DashboardPage />}
-        />
+        <Route element={<AppLayout />}>
+          <Route
+            path="/dashboard"
+            element={<DashboardPage />}
+          />
+
+          <Route
+            path="/tickets"
+            element={<TicketsPage />}
+          />
+        </Route>
       </Route>
 
       <Route

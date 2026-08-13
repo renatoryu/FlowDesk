@@ -2,26 +2,17 @@ import { useQuery } from '@tanstack/react-query'
 import { getDashboardSummary } from '../services/dashboardApi'
 import {
   BarChart3,
-  Building2,
   CircleUserRound,
   LayoutDashboard,
   LifeBuoy,
-  LogOut,
   TicketCheck,
 } from 'lucide-react'
 import { useAuth } from '../../auth/context/useAuth'
-import type { UserRole } from '../../auth/types/authTypes'
 import styles from './DashboardPage.module.css'
 
-const roleLabels: Record<UserRole, string> = {
-  Customer: 'Cliente',
-  Agent: 'Agente',
-  Admin: 'Administrador',
-}
-
 function DashboardPage() {
-  const { session, signOut } = useAuth()
 
+  const { session } = useAuth()
   const accessToken = session?.accessToken ?? ''
 
   const summaryQuery = useQuery({
@@ -58,61 +49,6 @@ function DashboardPage() {
     session.user.fullName.split(' ')[0]
 
   return (
-    <div className={styles.page}>
-      <aside className={styles.sidebar}>
-        <div className={styles.brand}>
-          <span>
-            <LifeBuoy aria-hidden="true" />
-          </span>
-
-          <div>
-            <strong>FlowDesk</strong>
-            <small>Service management</small>
-          </div>
-        </div>
-
-        <nav className={styles.navigation}>
-          <a className={styles.active} href="/dashboard">
-            <LayoutDashboard aria-hidden="true" />
-            Visão geral
-          </a>
-
-          <span>
-            <TicketCheck aria-hidden="true" />
-            Chamados
-          </span>
-
-          {session.user.role === 'Admin' && (
-            <span>
-              <Building2 aria-hidden="true" />
-              Empresas
-            </span>
-          )}
-        </nav>
-
-        <div className={styles.user}>
-          <span className={styles.avatar}>
-            {firstName.charAt(0)}
-          </span>
-
-          <div>
-            <strong>{session.user.fullName}</strong>
-            <small>
-              {roleLabels[session.user.role]}
-            </small>
-          </div>
-
-          <button
-            type="button"
-            onClick={signOut}
-            title="Sair"
-            aria-label="Sair"
-          >
-            <LogOut aria-hidden="true" />
-          </button>
-        </div>
-      </aside>
-
       <main className={styles.content}>
         <header className={styles.header}>
           <div>
@@ -207,7 +143,6 @@ function DashboardPage() {
           </span>
         </section>
       </main>
-    </div>
   )
 }
 
