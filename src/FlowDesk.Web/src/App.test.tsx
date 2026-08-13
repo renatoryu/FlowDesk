@@ -8,7 +8,7 @@ describe('App', () => {
 
     expect(
       screen.getByRole('heading', {
-        name: 'Get started',
+        name: 'Acesse sua conta',
       }),
     ).toBeInTheDocument()
   })
