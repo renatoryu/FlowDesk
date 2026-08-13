@@ -5,7 +5,6 @@ import {
   CircleAlert,
   FileText,
   LoaderCircle,
-  Paperclip,
   Tag,
   UserRound,
 } from 'lucide-react'
@@ -23,6 +22,8 @@ import type {
 } from '../types/ticketTypes'
 import styles from './TicketDetailsPage.module.css'
 import TicketCommentsSection from '../../comments/components/TicketCommentsSection'
+import TicketAttachmentsSection from '../../attachments/components/TicketAttachmentsSection'
+import TicketStatusActions from '../components/TicketStatusActions'
 
 const statusLabels: Record<TicketStatus, string> = {
   1: 'Aberto',
@@ -170,22 +171,20 @@ function TicketDetailsPage() {
             </p>
           </section>
 
+          <TicketStatusActions
+            ticketId={ticket.id}
+            currentStatus={ticket.status}
+          />
+
           <TicketCommentsSection
             ticketId={ticket.id}
             ticketStatus={ticket.status}
           />
 
-          <section className={styles.card}>
-            <header>
-              <Paperclip aria-hidden="true" />
-              <h2>Anexos</h2>
-            </header>
-
-            <p className={styles.placeholder}>
-              Os arquivos deste chamado serão exibidos
-              aqui.
-            </p>
-          </section>
+          <TicketAttachmentsSection
+            ticketId={ticket.id}
+            ticketStatus={ticket.status}
+          />
         </div>
 
         <aside className={styles.metadata}>

@@ -1,9 +1,11 @@
 import { authenticatedApiRequest } from '../../../shared/api/apiClient'
 import type {
-  ListTicketsParams,
-  ListTicketsResponse,
+  ChangeTicketStatusRequest,
+  ChangeTicketStatusResponse,
   CreateTicketRequest,
   CreateTicketResponse,
+  ListTicketsParams,
+  ListTicketsResponse,
   TicketDetails,
 } from '../types/ticketTypes'
 
@@ -64,5 +66,20 @@ export function getTicketById(
   return authenticatedApiRequest<TicketDetails>(
     `/tickets/${ticketId}`,
     accessToken,
+  )
+}
+
+export function changeTicketStatus(
+  accessToken: string,
+  ticketId: string,
+  request: ChangeTicketStatusRequest,
+): Promise<ChangeTicketStatusResponse> {
+  return authenticatedApiRequest<ChangeTicketStatusResponse>(
+    `/tickets/${ticketId}/status`,
+    accessToken,
+    {
+      method: 'PATCH',
+      body: JSON.stringify(request),
+    },
   )
 }

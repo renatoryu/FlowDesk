@@ -83,3 +83,39 @@ export function authenticatedApiRequest<T>(
     headers,
   })
 }
+
+export async function authenticatedFileRequest(
+  path: string,
+  accessToken: string,
+): Promise<Blob> {
+  const response = await fetch(`${apiUrl}${path}`, {
+    headers: {
+      Accept: '*/*',
+      Authorization: `Bearer ${accessToken}`,
+    },
+  })
+
+  if (!response.ok) {
+    const contentType =
+      response.headers.get('content-type')
+
+    const hasJson =
+      contentType?.includes(
+        'application/json',
+      ) === true
+
+    const problem = hasJson
+      ? await response.json() as ApiProblem
+      : {}
+
+    throw new ApiError(
+      problem.detail ??
+      problem.title ??
+      'Não foi possível baixar o arquivo.',
+      response.status,
+      problem,
+    )
+  }
+
+  return response.blob()
+}

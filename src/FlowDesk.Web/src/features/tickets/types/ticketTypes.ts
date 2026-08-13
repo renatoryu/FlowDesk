@@ -65,3 +65,10 @@ export interface TicketDetails {
   resolvedAtUtc: string | null
   closedAtUtc: string | null
 }
+
+export interface ChangeTicketStatusRequest {
+  status: TicketStatus
+}
+
+export type ChangeTicketStatusResponse =
+  TicketDetails
