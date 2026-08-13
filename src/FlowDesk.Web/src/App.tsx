@@ -17,6 +17,7 @@ import AppLayout from './shared/layout/AppLayout'
 import TicketsPage from './features/tickets/pages/TicketsPage'
 import CreateTicketPage from './features/tickets/pages/CreateTicketPage'
 import TicketDetailsPage from './features/tickets/pages/TicketDetailsPage'
+import CompaniesPage from './features/companies/pages/CompaniesPage'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -65,6 +66,12 @@ function ApplicationRoutes() {
             path="/tickets/:ticketId"
             element={<TicketDetailsPage />}
           />
+
+          <Route
+            path="/companies"
+            element={<CompaniesPage />}
+          />
+
         </Route>
       </Route>
 

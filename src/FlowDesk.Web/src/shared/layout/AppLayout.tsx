@@ -62,11 +62,16 @@ function AppLayout() {
             Chamados
           </NavLink>
 
-          {session.user.role === 'Admin' && (
-            <span>
+          {session.user.role !== 'Customer' && (
+            <NavLink
+              to="/companies"
+              className={({ isActive }) =>
+                isActive ? styles.active : undefined
+              }
+            >
               <Building2 aria-hidden="true" />
               Empresas
-            </span>
+            </NavLink>
           )}
         </nav>
 
