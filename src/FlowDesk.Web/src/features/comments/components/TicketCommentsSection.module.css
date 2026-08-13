@@ -1,0 +1,257 @@
+.section {
+  padding: 1.35rem;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 1rem;
+  box-shadow: 0 0.6rem 1.8rem rgb(15 23 42 / 4%);
+}
+
+  .section > header {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #f1f5f9;
+  }
+
+    .section > header > svg {
+      width: 1.1rem;
+      color: #0284c7;
+    }
+
+    .section > header div {
+      display: flex;
+      align-items: baseline;
+      gap: 0.55rem;
+    }
+
+  .section h2 {
+    margin: 0;
+    color: #1e293b;
+    font-size: 0.9rem;
+  }
+
+  .section > header span {
+    color: #94a3b8;
+    font-size: 0.67rem;
+    font-weight: 650;
+  }
+
+.state,
+.empty {
+  display: flex;
+  min-height: 7rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  color: #94a3b8;
+  font-size: 0.76rem;
+  text-align: center;
+}
+
+.state {
+  flex-direction: column;
+}
+
+  .state svg {
+    width: 1.5rem;
+    color: #38bdf8;
+  }
+
+  .state button {
+    padding: 0.45rem 0.65rem;
+    color: #0369a1;
+    background: #e0f2fe;
+    border: 0;
+    border-radius: 0.5rem;
+    font-size: 0.7rem;
+    font-weight: 750;
+  }
+
+.history {
+  display: grid;
+  gap: 1rem;
+  padding: 1.25rem 0;
+}
+
+  .history article {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: start;
+    gap: 0.75rem;
+  }
+
+.avatar {
+  display: grid;
+  width: 2.2rem;
+  height: 2.2rem;
+  place-items: center;
+  color: #075985;
+  background: #e0f2fe;
+  border-radius: 50%;
+  font-size: 0.72rem;
+  font-weight: 850;
+}
+
+.history article > div {
+  min-width: 0;
+  padding: 0.75rem 0.9rem;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.8rem;
+}
+
+.history article header {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.history strong {
+  color: #334155;
+  font-size: 0.73rem;
+}
+
+.history time {
+  color: #94a3b8;
+  font-size: 0.63rem;
+  white-space: nowrap;
+}
+
+.history p {
+  margin: 0.55rem 0 0;
+  color: #475569;
+  font-size: 0.78rem;
+  line-height: 1.6;
+  white-space: pre-wrap;
+}
+
+.form {
+  display: grid;
+  gap: 0.6rem;
+  padding-top: 1.1rem;
+  border-top: 1px solid #f1f5f9;
+}
+
+  .form label {
+    color: #334155;
+    font-size: 0.75rem;
+    font-weight: 750;
+  }
+
+  .form textarea {
+    width: 100%;
+    padding: 0.8rem 0.9rem;
+    color: #0f172a;
+    background: #f8fafc;
+    border: 1px solid #cbd5e1;
+    border-radius: 0.75rem;
+    outline: none;
+    font: inherit;
+    font-size: 0.78rem;
+    line-height: 1.6;
+    resize: vertical;
+  }
+
+    .form textarea:focus {
+      background: #fff;
+      border-color: #38bdf8;
+      box-shadow: 0 0 0 3px rgb(56 189 248 / 15%);
+    }
+
+    .form textarea[aria-invalid='true'] {
+      border-color: #f87171;
+    }
+
+.formFooter {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+  .formFooter > span {
+    display: flex;
+    flex: 1;
+    justify-content: space-between;
+    color: #94a3b8;
+    font-size: 0.66rem;
+  }
+
+  .formFooter button {
+    display: inline-flex;
+    min-height: 2.35rem;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0 0.8rem;
+    color: #fff;
+    background: linear-gradient(135deg, #0284c7, #0891b2);
+    border: 0;
+    border-radius: 0.65rem;
+    font-size: 0.72rem;
+    font-weight: 800;
+  }
+
+    .formFooter button:disabled {
+      cursor: wait;
+      opacity: 0.65;
+    }
+
+    .formFooter button svg {
+      width: 0.95rem;
+    }
+
+.error {
+  color: #dc2626;
+}
+
+.apiError,
+.closedNotice {
+  padding: 0.75rem 0.85rem;
+  border-radius: 0.7rem;
+  font-size: 0.72rem;
+  font-weight: 650;
+}
+
+.apiError {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: #991b1b;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+}
+
+  .apiError svg {
+    width: 1rem;
+  }
+
+.closedNotice {
+  margin-top: 1rem;
+  color: #475569;
+  background: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  text-align: center;
+}
+
+.spinning {
+  animation: spin 0.9s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 600px) {
+  .history article header,
+  .formFooter {
+    flex-direction: column;
+  }
+
+    .formFooter button {
+      width: 100%;
+      justify-content: center;
+    }
+}

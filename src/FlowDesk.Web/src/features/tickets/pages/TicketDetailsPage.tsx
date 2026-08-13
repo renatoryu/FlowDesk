@@ -5,7 +5,6 @@ import {
   CircleAlert,
   FileText,
   LoaderCircle,
-  MessageSquare,
   Paperclip,
   Tag,
   UserRound,
@@ -23,6 +22,7 @@ import type {
   TicketStatus,
 } from '../types/ticketTypes'
 import styles from './TicketDetailsPage.module.css'
+import TicketCommentsSection from '../../comments/components/TicketCommentsSection'
 
 const statusLabels: Record<TicketStatus, string> = {
   1: 'Aberto',
@@ -170,17 +170,10 @@ function TicketDetailsPage() {
             </p>
           </section>
 
-          <section className={styles.card}>
-            <header>
-              <MessageSquare aria-hidden="true" />
-              <h2>Comentários</h2>
-            </header>
-
-            <p className={styles.placeholder}>
-              O histórico de comentários será carregado
-              no próximo bloco.
-            </p>
-          </section>
+          <TicketCommentsSection
+            ticketId={ticket.id}
+            ticketStatus={ticket.status}
+          />
 
           <section className={styles.card}>
             <header>
