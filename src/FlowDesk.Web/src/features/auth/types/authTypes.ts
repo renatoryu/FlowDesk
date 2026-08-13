@@ -30,3 +30,14 @@ export interface AuthSession {
   refreshToken: string
   refreshTokenExpiresAtUtc: string
 }
+
+export interface RefreshSessionRequest {
+  refreshToken: string
+}
+
+export interface RefreshSessionResponse {
+  accessToken: string
+  accessTokenExpiresAtUtc: string
+  refreshToken: string
+  refreshTokenExpiresAtUtc: string
+}

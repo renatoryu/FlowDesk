@@ -1,6 +1,7 @@
 import type {
   AuthSession,
   LoginResponse,
+  RefreshSessionResponse,
 } from '../types/authTypes'
 
 const sessionKey = 'flowdesk.auth.session'
@@ -15,6 +16,21 @@ export function createAuthSession(
       email: response.email,
       role: response.role,
     },
+    accessToken: response.accessToken,
+    accessTokenExpiresAtUtc:
+      response.accessTokenExpiresAtUtc,
+    refreshToken: response.refreshToken,
+    refreshTokenExpiresAtUtc:
+      response.refreshTokenExpiresAtUtc,
+  }
+}
+
+export function renewAuthSession(
+  session: AuthSession,
+  response: RefreshSessionResponse,
+): AuthSession {
+  return {
+    ...session,
     accessToken: response.accessToken,
     accessTokenExpiresAtUtc:
       response.accessTokenExpiresAtUtc,
