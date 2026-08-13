@@ -49,3 +49,19 @@ export interface CreateTicketResponse {
   createdAtUtc: string
   statusChangedAtUtc: string
 }
+
+export interface TicketDetails {
+  id: string
+  companyId: string
+  categoryId: string
+  requesterId: string
+  title: string
+  description: string
+  priority: TicketPriority
+  status: TicketStatus
+  createdAtUtc: string
+  updatedAtUtc: string
+  statusChangedAtUtc: string
+  resolvedAtUtc: string | null
+  closedAtUtc: string | null
+}

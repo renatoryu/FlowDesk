@@ -3,7 +3,8 @@ import type {
   ListTicketsParams,
   ListTicketsResponse,
   CreateTicketRequest,
-  CreateTicketResponse
+  CreateTicketResponse,
+  TicketDetails,
 } from '../types/ticketTypes'
 
 export function listTickets(
@@ -53,5 +54,15 @@ export function createTicket(
       method: 'POST',
       body: JSON.stringify(request),
     },
+  )
+}
+
+export function getTicketById(
+  accessToken: string,
+  ticketId: string,
+): Promise<TicketDetails> {
+  return authenticatedApiRequest<TicketDetails>(
+    `/tickets/${ticketId}`,
+    accessToken,
   )
 }

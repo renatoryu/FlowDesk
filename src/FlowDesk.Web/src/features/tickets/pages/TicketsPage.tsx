@@ -247,13 +247,18 @@ function TicketsPage() {
                 {tickets.map((ticket) => (
                   <tr key={ticket.id}>
                     <td>
-                      <strong>{ticket.title}</strong>
-                      <small>
-                        #
-                        {ticket.id
-                          .slice(0, 8)
-                          .toUpperCase()}
-                      </small>
+                      <Link
+                        className={styles.ticketLink}
+                        to={`/tickets/${ticket.id}`}
+                      >
+                        <strong>{ticket.title}</strong>
+                        <small>
+                          #
+                          {ticket.id
+                            .slice(0, 8)
+                            .toUpperCase()}
+                        </small>
+                      </Link>
                     </td>
 
                     <td>
