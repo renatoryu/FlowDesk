@@ -87,13 +87,13 @@ Este documento acompanha o desenvolvimento incremental do FlowDesk. Uma sprint s
 
 ## Sprint 9 — Front-end
 
-- [ ] Criar o projeto React com TypeScript.
-- [ ] Criar a página de login.
-- [ ] Criar o dashboard.
-- [ ] Criar a área de empresas.
-- [ ] Criar a área de chamados.
-- [ ] Criar a página de perfil.
-- [ ] Integrar o front-end com a API.
+- [x] Criar o projeto React com TypeScript.
+- [x] Criar a página de login.
+- [x] Criar o dashboard.
+- [x] Criar a área de empresas.
+- [x] Criar a área de chamados.
+- [x] Criar a página de perfil.
+- [x] Integrar o front-end com a API.
 
 ## Sprint 10 — Deploy
 

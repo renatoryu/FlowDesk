@@ -24,9 +24,11 @@ O projeto está sendo desenvolvido com foco em aprendizado, boas práticas, port
 
 ✅ Sprint 8 concluída — API e SQL Server containerizados com Docker Compose, health checks, volumes persistentes, migrations automáticas e validação no GitHub Actions.
 
-Próxima etapa: Sprint 9 — front-end com React e TypeScript.
+✅ Sprint 9 concluída — front-end operacional em React e TypeScript, com autenticação, renovação de sessão, dashboard, empresas, chamados, comentários, anexos, perfil e integração com a API.
 
-A solução possui atualmente 244 testes unitários aprovados.
+Próxima etapa: Sprint 10 — deploy.
+
+O projeto possui 244 testes unitários aprovados no backend e 6 testes automatizados no front-end.
 
 - [Documentação técnica da Sprint 1](docs/SPRINT-1.md)
 - [Documentação técnica da Sprint 2](docs/SPRINT-2.md)
@@ -36,6 +38,7 @@ A solução possui atualmente 244 testes unitários aprovados.
 - [Documentação técnica da Sprint 6](docs/SPRINT-6.md)
 - [Documentação técnica da Sprint 7](docs/SPRINT-7.md)
 - [Documentação técnica da Sprint 8](docs/SPRINT-8.md)
+- [Documentação técnica da Sprint 9](docs/SPRINT-9.md)
 
 ## Objetivos
 
@@ -60,8 +63,14 @@ A solução possui atualmente 244 testes unitários aprovados.
 
 ### Front-end
 
-- React
+- React 19
 - TypeScript
+- Vite
+- React Router
+- TanStack Query
+- React Hook Form e Zod
+- CSS Modules
+- Vitest e Testing Library
 
 ### Qualidade e infraestrutura
 
@@ -103,7 +112,8 @@ FlowDesk
 │   ├── FlowDesk.Api
 │   ├── FlowDesk.Application
 │   ├── FlowDesk.Domain
-│   └── FlowDesk.Infrastructure
+│   ├── FlowDesk.Infrastructure
+│   └── FlowDesk.Web
 ├── tests
 │   └── FlowDesk.UnitTests
 ├── docs
@@ -150,6 +160,25 @@ Update-Database -Project FlowDesk.Infrastructure -StartupProject FlowDesk.Api
 2. Defina `FlowDesk.Api` como projeto de inicialização.
 3. Execute com `Ctrl + F5`.
 4. Acesse `/swagger`.
+
+### 4. Executar o front-end
+
+Em outro terminal, execute:
+
+```powershell
+cd .\src\FlowDesk.Web
+Copy-Item .env.example .env.local
+npm.cmd install
+npm.cmd run dev
+```
+
+O front-end será iniciado pelo Vite. Por padrão, ele encaminha chamadas `/api` para `http://localhost:62560`.
+
+Se a API estiver em Docker, altere `FLOWDESK_API_PROXY_TARGET` no arquivo `.env.local` para:
+
+```env
+FLOWDESK_API_PROXY_TARGET=http://localhost:8080
+```
 
 ### Endpoints atuais
 
@@ -199,6 +228,19 @@ dotnet test FlowDesk.slnx `
   --collect:"XPlat Code Coverage" `
   --results-directory TestResults
 ```
+
+### Testes do front-end
+
+Na pasta `src/FlowDesk.Web`:
+
+```powershell
+npm.cmd run test
+npm.cmd run typecheck
+npm.cmd run lint
+npm.cmd run build
+```
+
+A Sprint 9 possui 6 testes automatizados no front-end.
 
 A cobertura oficial das camadas Domain e Application é:
 
