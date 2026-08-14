@@ -41,3 +41,5 @@ export interface RefreshSessionResponse {
   refreshToken: string
   refreshTokenExpiresAtUtc: string
 }
+
+export type CurrentUserResponse = AuthUser

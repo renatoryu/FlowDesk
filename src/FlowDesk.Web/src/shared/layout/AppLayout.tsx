@@ -4,6 +4,7 @@ import {
   LifeBuoy,
   LogOut,
   TicketCheck,
+  UserRound,
 } from 'lucide-react'
 import { NavLink, Outlet } from 'react-router'
 import { useAuth } from '../../features/auth/context/useAuth'
@@ -60,6 +61,16 @@ function AppLayout() {
           >
             <TicketCheck aria-hidden="true" />
             Chamados
+          </NavLink>
+
+          <NavLink
+            to="/profile"
+            className={({ isActive }) =>
+              isActive ? styles.active : undefined
+            }
+          >
+            <UserRound aria-hidden="true" />
+            Meu perfil
           </NavLink>
 
           {session.user.role !== 'Customer' && (

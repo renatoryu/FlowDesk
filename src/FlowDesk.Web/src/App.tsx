@@ -18,6 +18,7 @@ import TicketsPage from './features/tickets/pages/TicketsPage'
 import CreateTicketPage from './features/tickets/pages/CreateTicketPage'
 import TicketDetailsPage from './features/tickets/pages/TicketDetailsPage'
 import CompaniesPage from './features/companies/pages/CompaniesPage'
+import ProfilePage from './features/auth/pages/ProfilePage'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -70,6 +71,11 @@ function ApplicationRoutes() {
           <Route
             path="/companies"
             element={<CompaniesPage />}
+          />
+
+          <Route
+            path="/profile"
+            element={<ProfilePage />}
           />
 
         </Route>

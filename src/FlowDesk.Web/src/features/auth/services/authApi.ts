@@ -1,5 +1,10 @@
-import { apiRequest } from '../../../shared/api/apiClient'
+import {
+  apiRequest,
+  authenticatedApiRequest,
+} from '../../../shared/api/apiClient'
+
 import type {
+  CurrentUserResponse,
   LoginRequest,
   LoginResponse,
   RefreshSessionRequest,
@@ -48,4 +53,13 @@ export function refreshSession(
   )
 
   return newRequest
+}
+
+export function getCurrentUser(
+  accessToken: string,
+): Promise<CurrentUserResponse> {
+  return authenticatedApiRequest<CurrentUserResponse>(
+    '/auth/me',
+    accessToken,
+  )
 }
