@@ -1,0 +1,282 @@
+.content {
+  width: min(100%, 86rem);
+  margin: 0 auto;
+  padding: clamp(1.5rem, 4vw, 3.5rem);
+}
+
+.back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: #64748b;
+  font-size: 0.76rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+  .back:hover {
+    color: #0284c7;
+  }
+
+  .back svg {
+    width: 1rem;
+  }
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 2rem;
+  margin-top: 1.5rem;
+}
+
+  .header div:first-child > span {
+    color: #0284c7;
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .header h1 {
+    max-width: 50rem;
+    margin: 0.45rem 0 0;
+    color: #0f172a;
+    font-size: clamp(1.8rem, 4vw, 3rem);
+    letter-spacing: -0.04em;
+    line-height: 1.1;
+  }
+
+.badges {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.badge {
+  display: inline-flex;
+  padding: 0.4rem 0.65rem;
+  border-radius: 999px;
+  font-size: 0.68rem;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.priority1 {
+  color: #0369a1;
+  background: #e0f2fe;
+}
+
+.priority2 {
+  color: #a16207;
+  background: #fef9c3;
+}
+
+.priority3 {
+  color: #c2410c;
+  background: #ffedd5;
+}
+
+.priority4 {
+  color: #b91c1c;
+  background: #fee2e2;
+}
+
+.status1 {
+  color: #0369a1;
+  background: #e0f2fe;
+}
+
+.status2 {
+  color: #b45309;
+  background: #fef3c7;
+}
+
+.status3 {
+  color: #047857;
+  background: #d1fae5;
+}
+
+.status4 {
+  color: #475569;
+  background: #e2e8f0;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 20rem;
+  align-items: start;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.mainColumn {
+  display: grid;
+  gap: 1rem;
+}
+
+.card,
+.metadata {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 1rem;
+  box-shadow: 0 0.6rem 1.8rem rgb(15 23 42 / 4%);
+}
+
+.card {
+  padding: 1.35rem;
+}
+
+  .card > header {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #f1f5f9;
+  }
+
+    .card > header svg {
+      width: 1.1rem;
+      color: #0284c7;
+    }
+
+  .card h2,
+  .metadata h2 {
+    margin: 0;
+    color: #1e293b;
+    font-size: 0.9rem;
+  }
+
+.description {
+  margin: 1.1rem 0 0;
+  color: #475569;
+  line-height: 1.75;
+  white-space: pre-wrap;
+}
+
+.placeholder {
+  margin: 1rem 0 0;
+  padding: 1rem;
+  color: #94a3b8;
+  background: #f8fafc;
+  border: 1px dashed #cbd5e1;
+  border-radius: 0.75rem;
+  font-size: 0.78rem;
+  text-align: center;
+}
+
+.metadata {
+  position: sticky;
+  top: 1rem;
+  padding: 1.35rem;
+}
+
+  .metadata h2 {
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #f1f5f9;
+  }
+
+  .metadata dl {
+    display: grid;
+    gap: 0;
+    margin: 0;
+  }
+
+    .metadata dl > div {
+      padding: 1rem 0;
+      border-bottom: 1px solid #f1f5f9;
+    }
+
+      .metadata dl > div:last-child {
+        padding-bottom: 0;
+        border-bottom: 0;
+      }
+
+  .metadata dt {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    color: #94a3b8;
+    font-size: 0.67rem;
+    font-weight: 750;
+    text-transform: uppercase;
+  }
+
+    .metadata dt svg {
+      width: 0.95rem;
+    }
+
+  .metadata dd {
+    margin: 0.4rem 0 0 1.4rem;
+    color: #334155;
+    font-size: 0.78rem;
+    font-weight: 650;
+  }
+
+.state {
+  display: flex;
+  min-height: 65svh;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 0.7rem;
+  color: #64748b;
+  text-align: center;
+}
+
+  .state > svg {
+    width: 2.5rem;
+    height: 2.5rem;
+    color: #38bdf8;
+  }
+
+  .state strong {
+    color: #334155;
+  }
+
+  .state p {
+    max-width: 28rem;
+    margin: 0;
+    font-size: 0.8rem;
+    line-height: 1.6;
+  }
+
+  .state a {
+    margin-top: 0.5rem;
+    padding: 0.65rem 0.9rem;
+    color: #fff;
+    background: #0284c7;
+    border-radius: 0.65rem;
+    font-size: 0.75rem;
+    font-weight: 750;
+    text-decoration: none;
+  }
+
+.spinning {
+  animation: spin 0.9s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 980px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+
+  .metadata {
+    position: static;
+  }
+}
+
+@media (max-width: 680px) {
+  .header {
+    flex-direction: column;
+  }
+
+  .badges {
+    flex-wrap: wrap;
+  }
+}

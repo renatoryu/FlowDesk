@@ -7,6 +7,10 @@
     <Project Path="src/FlowDesk.Application/FlowDesk.Application.csproj" />
     <Project Path="src/FlowDesk.Domain/FlowDesk.Domain.csproj" />
     <Project Path="src/FlowDesk.Infrastructure/FlowDesk.Infrastructure.csproj" />
+    <Project Path="src/FlowDesk.Web/FlowDesk.Web.esproj">
+      <Build />
+      <Deploy />
+    </Project>
   </Folder>
   <Folder Name="/tests/">
     <Project Path="tests/FlowDesk.UnitTests/FlowDesk.UnitTests.csproj" />

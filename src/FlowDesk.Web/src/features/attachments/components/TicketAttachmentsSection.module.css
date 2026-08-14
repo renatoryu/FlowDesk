@@ -1,0 +1,284 @@
+.section {
+  padding: 1.35rem;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 1rem;
+  box-shadow: 0 0.6rem 1.8rem rgb(15 23 42 / 4%);
+}
+
+  .section > header {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #f1f5f9;
+  }
+
+    .section > header > svg {
+      width: 1.1rem;
+      color: #0284c7;
+    }
+
+    .section > header div {
+      display: flex;
+      align-items: baseline;
+      gap: 0.55rem;
+    }
+
+  .section h2 {
+    margin: 0;
+    color: #1e293b;
+    font-size: 0.9rem;
+  }
+
+  .section > header span {
+    color: #94a3b8;
+    font-size: 0.67rem;
+    font-weight: 650;
+  }
+
+.state,
+.empty {
+  display: flex;
+  min-height: 6rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  color: #94a3b8;
+  font-size: 0.76rem;
+  text-align: center;
+}
+
+.state {
+  flex-direction: column;
+}
+
+  .state svg {
+    width: 1.4rem;
+    color: #38bdf8;
+  }
+
+  .state button {
+    padding: 0.45rem 0.65rem;
+    color: #0369a1;
+    background: #e0f2fe;
+    border: 0;
+    border-radius: 0.5rem;
+    font-size: 0.7rem;
+    font-weight: 750;
+    cursor: pointer;
+  }
+
+.fileList {
+  display: grid;
+  gap: 0.7rem;
+  padding: 1rem 0;
+}
+
+  .fileList article {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.8rem;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.8rem;
+  }
+
+.fileIcon {
+  display: grid;
+  width: 2.3rem;
+  height: 2.3rem;
+  place-items: center;
+  color: #0369a1;
+  background: #e0f2fe;
+  border-radius: 0.65rem;
+}
+
+  .fileIcon svg {
+    width: 1.1rem;
+  }
+
+.fileInfo {
+  display: grid;
+  min-width: 0;
+  gap: 0.25rem;
+}
+
+  .fileInfo strong {
+    overflow: hidden;
+    color: #334155;
+    font-size: 0.75rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .fileInfo span {
+    color: #94a3b8;
+    font-size: 0.65rem;
+  }
+
+.downloadButton {
+  display: grid;
+  width: 2.2rem;
+  height: 2.2rem;
+  place-items: center;
+  color: #0369a1;
+  background: #fff;
+  border: 1px solid #bae6fd;
+  border-radius: 0.6rem;
+  cursor: pointer;
+  transition: color 160ms ease, background 160ms ease, transform 160ms ease;
+}
+
+  .downloadButton:hover:not(:disabled) {
+    color: #fff;
+    background: #0284c7;
+    transform: translateY(-1px);
+  }
+
+  .downloadButton:disabled {
+    cursor: wait;
+    opacity: 0.6;
+  }
+
+  .downloadButton svg {
+    width: 1rem;
+  }
+
+.uploadForm {
+  display: grid;
+  gap: 0.75rem;
+  padding-top: 1rem;
+  border-top: 1px solid #f1f5f9;
+}
+
+  .uploadForm > label {
+    display: inline-flex;
+    width: fit-content;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.65rem 0.85rem;
+    color: #0369a1;
+    background: #e0f2fe;
+    border: 1px dashed #7dd3fc;
+    border-radius: 0.7rem;
+    font-size: 0.72rem;
+    font-weight: 800;
+    cursor: pointer;
+  }
+
+    .uploadForm > label:hover {
+      background: #bae6fd;
+    }
+
+    .uploadForm > label svg {
+      width: 1rem;
+    }
+
+  .uploadForm > input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    clip-path: inset(50%);
+  }
+
+.selection {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+  .selection > span {
+    min-width: 0;
+    overflow: hidden;
+    color: #64748b;
+    font-size: 0.68rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .selection button {
+    display: inline-flex;
+    min-height: 2.3rem;
+    flex-shrink: 0;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0 0.8rem;
+    color: #fff;
+    background: linear-gradient(135deg, #0284c7, #0891b2);
+    border: 0;
+    border-radius: 0.65rem;
+    font-size: 0.7rem;
+    font-weight: 800;
+    cursor: pointer;
+  }
+
+    .selection button:disabled {
+      cursor: not-allowed;
+      opacity: 0.55;
+    }
+
+    .selection button svg {
+      width: 0.95rem;
+    }
+
+.apiError,
+.closedNotice {
+  padding: 0.75rem 0.85rem;
+  border-radius: 0.7rem;
+  font-size: 0.72rem;
+  font-weight: 650;
+}
+
+.apiError {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: #991b1b;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+}
+
+  .apiError svg {
+    width: 1rem;
+    flex-shrink: 0;
+  }
+
+.closedNotice {
+  margin-top: 1rem;
+  color: #475569;
+  background: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  text-align: center;
+}
+
+.spinning {
+  animation: spin 0.9s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 600px) {
+  .selection {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+    .selection button {
+      justify-content: center;
+    }
+
+  .fileInfo strong {
+    max-width: 12rem;
+  }
+}
